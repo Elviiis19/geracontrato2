@@ -33,10 +33,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           
           <h1 id="hero-title" className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight mb-8 leading-[1.1]">
             Gerador de Contratos <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-blue-100 to-emerald-200">Jurídicos em PDF</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 via-blue-100 to-emerald-200">Jurídicos em PDF</span>
           </h1>
           
-          <p className="mt-6 max-w-2xl mx-auto text-lg md:text-xl text-slate-300 leading-relaxed font-light">
+          <p className="mt-6 max-w-2xl mx-auto text-lg md:text-xl text-slate-200 leading-relaxed font-light">
             Crie documentos de <strong>Aluguel</strong>, <strong>Serviços</strong>, <strong>Veículos</strong> e <strong>Agro</strong> em minutos. 
             Sem cadastro, sem login, 100% seguro.
           </p>
@@ -62,10 +62,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </button>
           </div>
           
-          <div className="mt-12 pt-8 border-t border-slate-800/50 flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm font-medium text-slate-400">
-             <div className="flex items-center gap-2"><svg className="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg> 100% Gratuito</div>
-             <div className="flex items-center gap-2"><svg className="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg> Lei Brasileira (CC/2002)</div>
-             <div className="flex items-center gap-2"><svg className="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg> Privacidade Total</div>
+          <div className="mt-12 pt-8 border-t border-slate-800/50 flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm font-medium text-slate-300">
+             <div className="flex items-center gap-2"><svg className="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg> 100% Gratuito</div>
+             <div className="flex items-center gap-2"><svg className="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg> Lei Brasileira (CC/2002)</div>
+             <div className="flex items-center gap-2"><svg className="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg> Privacidade Total</div>
           </div>
         </div>
       </section>
@@ -108,7 +108,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <h2 id="models-title" className="text-3xl font-extrabold text-slate-900 sm:text-4xl mt-4">
               Qual documento você precisa hoje?
             </h2>
-            <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
+            <p className="mt-4 text-lg text-slate-700 max-w-2xl mx-auto">
               Selecione uma categoria abaixo para iniciar o preenchimento automático da sua minuta.
             </p>
           </div>
