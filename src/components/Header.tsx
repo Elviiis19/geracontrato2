@@ -107,23 +107,23 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
           <div className="flex items-center">
             {/* Logo Section */}
             <button 
-              className="flex-shrink-0 flex items-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg p-1" 
+              className="flex-shrink-0 flex items-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg p-1 group" 
               onClick={() => handleNavClick('home')}
-              aria-label="Ir para a página inicial"
+              aria-label="Ir para a página inicial do Gera Contrato"
             >
-              <div className="bg-blue-600 p-2 rounded-lg mr-3 shadow-md">
+              <div className="bg-blue-600 p-2 rounded-lg mr-3 shadow-md group-hover:bg-blue-700 transition-colors">
                 <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
               <div className="text-left">
-                <h1 className="text-xl font-bold text-gray-900 tracking-tight">Gera Contrato</h1>
-                <p className="text-[10px] uppercase tracking-wider text-blue-600 font-bold">Documentos Jurídicos Grátis</p>
+                <h1 className="text-xl font-bold text-gray-900 tracking-tight group-hover:text-blue-700 transition-colors">Gera Contrato</h1>
+                <p className="text-[10px] uppercase tracking-wider text-blue-600 font-bold group-hover:text-blue-800 transition-colors">Documentos Jurídicos Grátis</p>
               </div>
             </button>
 
             {/* Desktop Navigation (Moved next to logo) */}
-            <nav className="hidden xl:flex space-x-2 items-center h-full ml-10 border-l border-gray-200 pl-6" ref={navRef}>
+            <nav className="hidden xl:flex space-x-2 items-center h-full ml-10 border-l border-gray-200 pl-6" ref={navRef} aria-label="Navegação Principal">
               {navCategories.map((category) => (
                 <div 
                   key={category.id}
@@ -200,8 +200,9 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)} 
               className="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 p-2 rounded-md hover:bg-gray-100"
-              aria-label="Abrir menu de navegação"
+              aria-label="Alternar menu de navegação"
               aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {isMenuOpen ? (
@@ -217,7 +218,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
 
       {/* Mobile Menu Dropdown */}
       {isMenuOpen && (
-        <div className="xl:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg h-screen overflow-y-auto pb-32 z-50 animate-fade-in">
+        <div id="mobile-menu" className="xl:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg h-screen overflow-y-auto pb-32 z-50 animate-fade-in">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <button onClick={() => handleNavClick('home')} className="block w-full text-left px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 border-b border-gray-50">Home</button>
             

@@ -7,7 +7,7 @@
     <meta name="description" content="Ferramenta gratuita para gerar contratos em PDF. Modelos de Aluguel, Serviços, Rural, Agronegócio, Veículos e União Estável. Baseado na Legislação Brasileira." />
     <meta name="author" content="Elvis Dias" />
     <meta name="keywords" content="gerar contrato online, contrato pdf grátis, contrato de aluguel, contrato prestação serviços, contrato rural, arrendamento rural, parceria agrícola, contrato união estável" />
-    <meta name="theme-color" content="#1e3a8a" />
+    <meta name="theme-color" content="#0f172a" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -15,9 +15,10 @@
     <meta property="og:title" content="Gerar Contrato Online em PDF: Rápido e Grátis" />
     <meta property="og:description" content="Crie contratos profissionais de prestação de serviços, aluguel e venda de veículos gratuitamente. Baseado na lei brasileira." />
     
-    <!-- Fonts: Inter for Professional Look -->
+    <!-- Fonts: Preconnect and Preload for Performance (LCP) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Tailwind CSS -->
@@ -32,7 +33,7 @@
             colors: {
               navy: {
                 800: '#1e3a8a',
-                900: '#0f172a', // Darker for better contrast
+                900: '#0f172a',
               },
               slate: {
                 850: '#1e293b',
@@ -96,6 +97,12 @@
       }
       /* Smooth scrolling for anchor links */
       html { scroll-behavior: smooth; }
+      
+      /* Accessibility: Focus styles */
+      :focus-visible {
+        outline: 2px solid #2563eb;
+        outline-offset: 2px;
+      }
     </style>
 <script type="importmap">
 {
