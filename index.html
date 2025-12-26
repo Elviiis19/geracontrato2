@@ -4,9 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gerar Contrato Online em PDF: Rápido e Grátis | Gera Contrato</title>
-    <meta name="description" content="Ferramenta gratuita para gerar contratos em PDF. Modelos de Aluguel, Serviços, Rural, Agronegócio, Veículos e União Estável. Baseado na Legislação Brasileira. Sem cadastro." />
+    <meta name="description" content="Ferramenta gratuita para gerar contratos em PDF. Modelos de Aluguel, Serviços, Rural, Agronegócio, Veículos e União Estável. Baseado na Legislação Brasileira." />
     <meta name="author" content="Elvis Dias" />
     <meta name="keywords" content="gerar contrato online, contrato pdf grátis, contrato de aluguel, contrato prestação serviços, contrato rural, arrendamento rural, parceria agrícola, contrato união estável" />
+    <meta name="theme-color" content="#1e3a8a" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -14,28 +15,40 @@
     <meta property="og:title" content="Gerar Contrato Online em PDF: Rápido e Grátis" />
     <meta property="og:description" content="Crie contratos profissionais de prestação de serviços, aluguel e venda de veículos gratuitamente. Baseado na lei brasileira." />
     
+    <!-- Fonts: Inter for Professional Look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
             colors: {
               navy: {
                 800: '#1e3a8a',
-                900: '#172554',
+                900: '#0f172a', // Darker for better contrast
+              },
+              slate: {
+                850: '#1e293b',
+                900: '#0f172a',
               }
             },
             screens: {
               'print': {'raw': 'print'},
             },
             animation: {
-              'fade-in': 'fadeIn 0.3s ease-in-out',
+              'fade-in': 'fadeIn 0.4s ease-out forwards',
             },
             keyframes: {
               fadeIn: {
-                '0%': { opacity: '0' },
-                '100%': { opacity: '1' },
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
               }
             }
           }
@@ -51,7 +64,7 @@
       "name": "Gera Contrato",
       "url": "https://geracontrato.com.br",
       "applicationCategory": "BusinessApplication",
-      "operatingSystem": "Web Browser (Chrome, Safari, Firefox, Edge)",
+      "operatingSystem": "Web Browser",
       "browserRequirements": "Requires JavaScript",
       "offers": {
         "@type": "Offer",
@@ -81,6 +94,8 @@
         @page { margin: 0; size: auto; }
         body { -webkit-print-color-adjust: exact; }
       }
+      /* Smooth scrolling for anchor links */
+      html { scroll-behavior: smooth; }
     </style>
 <script type="importmap">
 {
@@ -94,7 +109,7 @@
 }
 </script>
 </head>
-  <body class="bg-gray-50 text-slate-800 font-sans antialiased">
+  <body class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-blue-100 selection:text-blue-900">
     <div id="root"></div>
     <script type="module" src="/src/index.tsx"></script>
   </body>

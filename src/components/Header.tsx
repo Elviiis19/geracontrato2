@@ -99,27 +99,31 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
   ];
 
   return (
-    <header className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm print:hidden font-sans">
+    <header className="bg-white/95 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 shadow-sm print:hidden font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           
           {/* Logo & Navigation Container (Left Aligned) */}
           <div className="flex items-center">
             {/* Logo Section */}
-            <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => handleNavClick('home')}>
-              <div className="bg-blue-600 p-2 rounded-lg mr-3">
+            <button 
+              className="flex-shrink-0 flex items-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg p-1" 
+              onClick={() => handleNavClick('home')}
+              aria-label="Ir para a página inicial"
+            >
+              <div className="bg-blue-600 p-2 rounded-lg mr-3 shadow-md">
                 <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <div>
+              <div className="text-left">
                 <h1 className="text-xl font-bold text-gray-900 tracking-tight">Gera Contrato</h1>
-                <p className="text-[10px] uppercase tracking-wider text-blue-600 font-semibold">Documentos Jurídicos Grátis</p>
+                <p className="text-[10px] uppercase tracking-wider text-blue-600 font-bold">Documentos Jurídicos Grátis</p>
               </div>
-            </div>
+            </button>
 
             {/* Desktop Navigation (Moved next to logo) */}
-            <nav className="hidden xl:flex space-x-2 items-center h-full ml-10 border-l border-gray-100 pl-6" ref={navRef}>
+            <nav className="hidden xl:flex space-x-2 items-center h-full ml-10 border-l border-gray-200 pl-6" ref={navRef}>
               {navCategories.map((category) => (
                 <div 
                   key={category.id}
@@ -129,8 +133,8 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                 >
                   <button 
                     onClick={() => toggleDropdown(category.id)} 
-                    className={`flex items-center font-medium transition-all text-sm focus:outline-none px-3 py-2 rounded-md
-                      ${activeDropdown === category.id ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50'}
+                    className={`flex items-center font-medium transition-all text-sm focus:outline-none px-3 py-2 rounded-md border border-transparent
+                      ${activeDropdown === category.id ? 'text-blue-700 bg-blue-50 border-blue-100' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50'}
                     `}
                     aria-haspopup="true"
                     aria-expanded={activeDropdown === category.id}
@@ -193,7 +197,12 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
 
           {/* Mobile Menu Button (Right Aligned) */}
           <div className="xl:hidden flex items-center">
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-500 hover:text-gray-700 focus:outline-none p-2 rounded-md hover:bg-gray-100">
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)} 
+              className="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 p-2 rounded-md hover:bg-gray-100"
+              aria-label="Abrir menu de navegação"
+              aria-expanded={isMenuOpen}
+            >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {isMenuOpen ? (
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -208,7 +217,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
 
       {/* Mobile Menu Dropdown */}
       {isMenuOpen && (
-        <div className="xl:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg h-screen overflow-y-auto pb-32 z-50">
+        <div className="xl:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg h-screen overflow-y-auto pb-32 z-50 animate-fade-in">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <button onClick={() => handleNavClick('home')} className="block w-full text-left px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 border-b border-gray-50">Home</button>
             
