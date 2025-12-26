@@ -16,14 +16,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   return (
     <div className="flex flex-col items-center w-full">
       
-      {/* Hero Section - Improved Gradient & Typography */}
+      {/* Hero Section - Optimized: Replaced heavy Blur filters with Gradients for Mobile Performance */}
       <section className="w-full bg-slate-900 relative overflow-hidden" aria-labelledby="hero-title">
-        {/* Abstract Background Shapes - Reduced opacity for better text contrast */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-          <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-blue-600/20 blur-3xl"></div>
-          <div className="absolute top-1/2 right-0 w-80 h-80 rounded-full bg-indigo-600/20 blur-3xl"></div>
-          <div className="absolute bottom-0 left-1/3 w-64 h-64 rounded-full bg-emerald-500/10 blur-3xl"></div>
-        </div>
+        {/* Optimized Background using CSS Gradients instead of blurred divs */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))] from-blue-900/40 via-slate-900 to-slate-900 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/30 via-transparent to-transparent pointer-events-none"></div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-900/40 border border-blue-700/50 text-blue-100 text-xs font-bold tracking-wide uppercase mb-8 animate-fade-in backdrop-blur-sm">

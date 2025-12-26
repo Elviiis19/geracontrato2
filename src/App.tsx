@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, Suspense } from 'react';
 import { Header } from './components/Header';
-import { Footer } from './components/Footer';
+// Lazy load Footer to reduce initial bundle size (TBT optimization)
+const Footer = React.lazy(() => import('./components/Footer').then(module => ({ default: module.Footer })));
 // Static import for HomePage (LCP optimization - load immediately)
 import { HomePage } from './components/HomePage';
 import { ContractData, initialPartyState, initialServiceState, initialImovelState, initialVehicleState, PageView, ContractType } from './types';
@@ -132,7 +133,9 @@ const App: React.FC = () => {
       <main className="flex-grow flex flex-col items-center w-full">
         {renderContent()}
       </main>
-      <Footer onNavigate={handleNavigation} />
+      <Suspense fallback={null}>
+        <Footer onNavigate={handleNavigation} />
+      </Suspense>
     </div>
   );
 };

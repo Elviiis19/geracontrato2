@@ -16,47 +16,50 @@
     <meta property="og:description" content="Crie contratos profissionais de prestação de serviços, aluguel e venda de veículos gratuitamente. Baseado na lei brasileira." />
     
     <!-- Fonts: Preconnect and Preload for Performance (LCP) -->
+    <!-- Added display=swap to avoid FOIT (Flash of Invisible Text) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS with defer to prevent render blocking -->
-    <script src="https://cdn.tailwindcss.com" defer></script>
+    <!-- Tailwind Config - Loaded BEFORE script to ensure config is ready -->
     <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-            },
-            colors: {
-              navy: {
-                800: '#1e3a8a',
-                900: '#0f172a',
+      tailwind = {
+        config: {
+          theme: {
+            extend: {
+              fontFamily: {
+                sans: ['Inter', 'sans-serif'],
               },
-              slate: {
-                850: '#1e293b',
-                900: '#0f172a',
-              }
-            },
-            screens: {
-              'print': {'raw': 'print'},
-            },
-            animation: {
-              'fade-in': 'fadeIn 0.4s ease-out forwards',
-            },
-            keyframes: {
-              fadeIn: {
-                '0%': { opacity: '0', transform: 'translateY(10px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' },
+              colors: {
+                navy: {
+                  800: '#1e3a8a',
+                  900: '#0f172a',
+                },
+                slate: {
+                  850: '#1e293b',
+                  900: '#0f172a',
+                }
+              },
+              screens: {
+                'print': {'raw': 'print'},
+              },
+              animation: {
+                'fade-in': 'fadeIn 0.4s ease-out forwards',
+              },
+              keyframes: {
+                fadeIn: {
+                  '0%': { opacity: '0', transform: 'translateY(10px)' },
+                  '100%': { opacity: '1', transform: 'translateY(0)' },
+                }
               }
             }
           }
         }
       }
     </script>
+    <!-- Tailwind CSS with defer -->
+    <script src="https://cdn.tailwindcss.com" defer></script>
 
     <!-- Schema Markup (JSON-LD) -->
     <script type="application/ld+json">
@@ -103,6 +106,13 @@
       :focus-visible {
         outline: 2px solid #2563eb;
         outline-offset: 2px;
+      }
+      /* Critical CSS to prevent white flash before Tailwind loads */
+      body {
+        background-color: #f8fafc; /* slate-50 */
+        color: #0f172a; /* slate-900 */
+        margin: 0;
+        font-family: sans-serif; /* System font fallback until Inter loads */
       }
     </style>
 <script type="importmap">
