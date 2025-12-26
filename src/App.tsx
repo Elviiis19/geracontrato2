@@ -70,6 +70,7 @@ const App: React.FC = () => {
                   data={contractData} 
                   onChange={handleDataChange} 
                   onPrint={handlePrint}
+                  onNavigate={handleNavigation}
                 />
               </div>
               <div className="order-2 lg:order-2 w-full print:w-full print:absolute print:top-0 print:left-0 print:z-50 sticky top-24">

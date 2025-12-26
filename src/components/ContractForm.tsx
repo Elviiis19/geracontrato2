@@ -1,15 +1,17 @@
-import React from 'react';
-import { ContractData, PartyDetails, ServiceDetails } from '../types';
+import React, { useRef } from 'react';
+import { ContractData, PageView } from '../types';
 import { trackEvent } from '../utils/analytics';
 
 interface ContractFormProps {
   data: ContractData;
   onChange: (newData: ContractData) => void;
   onPrint: () => void;
+  onNavigate: (page: PageView) => void;
 }
 
-export const ContractForm: React.FC<ContractFormProps> = ({ data, onChange, onPrint }) => {
+export const ContractForm: React.FC<ContractFormProps> = ({ data, onChange, onPrint, onNavigate }) => {
   const [agreed, setAgreed] = React.useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   // Labels configuration based on contract type
   const labels = {
@@ -131,17 +133,27 @@ export const ContractForm: React.FC<ContractFormProps> = ({ data, onChange, onPr
     onChange({ ...data, veiculo: { ...data.veiculo, [field]: value } });
   };
 
-  const handlePrintClick = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent any default button behavior
-    if (agreed) {
-      // Analytics: Track conversion
-      trackEvent('download_pdf', 'conversion', data.type);
-      onPrint();
+  const handleAction = (action: 'print' | 'download') => {
+    if (formRef.current) {
+      if (formRef.current.checkValidity()) {
+        // Form is valid
+        trackEvent(action === 'download' ? 'download_pdf' : 'print_document', 'conversion', data.type);
+        
+        if (action === 'download') {
+          // Tip for user
+          alert("Para salvar como PDF, selecione a opção 'Salvar como PDF' ou 'Microsoft Print to PDF' na janela de impressão que será aberta.");
+        }
+        
+        onPrint();
+      } else {
+        // Form is invalid, show native browser errors
+        formRef.current.reportValidity();
+      }
     }
   };
 
   return (
-    <form id="contractForm" className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+    <form ref={formRef} onSubmit={(e) => e.preventDefault()} className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
       <h2 className="text-xl font-semibold text-navy-900 mb-6 border-b pb-2">{currentLabels.title}</h2>
 
       {/* PARTE A */}
@@ -149,24 +161,24 @@ export const ContractForm: React.FC<ContractFormProps> = ({ data, onChange, onPr
         <h3 className="text-lg font-medium text-blue-800 mb-4 bg-blue-50 p-2 rounded">{currentLabels.partyA}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="col-span-1 md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
-            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratante.nome} onChange={(e) => updateContratante('nome', e.target.value)} placeholder="Ex: João da Silva" />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Nome Completo <span className="text-red-500">*</span></label>
+            <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratante.nome} onChange={(e) => updateContratante('nome', e.target.value)} placeholder="Ex: João da Silva" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">CPF / CNPJ</label>
-            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratante.cpfCnpj} onChange={(e) => updateContratante('cpfCnpj', e.target.value)} />
+            <label className="block text-sm font-medium text-gray-700 mb-1">CPF / CNPJ <span className="text-red-500">*</span></label>
+            <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratante.cpfCnpj} onChange={(e) => updateContratante('cpfCnpj', e.target.value)} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">RG</label>
-            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratante.rg} onChange={(e) => updateContratante('rg', e.target.value)} />
+            <label className="block text-sm font-medium text-gray-700 mb-1">RG <span className="text-red-500">*</span></label>
+            <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratante.rg} onChange={(e) => updateContratante('rg', e.target.value)} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nacionalidade</label>
-            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratante.nacionalidade} onChange={(e) => updateContratante('nacionalidade', e.target.value)} />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Nacionalidade <span className="text-red-500">*</span></label>
+            <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratante.nacionalidade} onChange={(e) => updateContratante('nacionalidade', e.target.value)} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Estado Civil</label>
-            <select className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratante.estadoCivil} onChange={(e) => updateContratante('estadoCivil', e.target.value)}>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Estado Civil <span className="text-red-500">*</span></label>
+            <select required className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratante.estadoCivil} onChange={(e) => updateContratante('estadoCivil', e.target.value)}>
               <option value="">Selecione...</option>
               <option value="Solteiro(a)">Solteiro(a)</option>
               <option value="Casado(a)">Casado(a)</option>
@@ -176,19 +188,19 @@ export const ContractForm: React.FC<ContractFormProps> = ({ data, onChange, onPr
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Profissão</label>
-            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratante.profissao} onChange={(e) => updateContratante('profissao', e.target.value)} />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Profissão <span className="text-red-500">*</span></label>
+            <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratante.profissao} onChange={(e) => updateContratante('profissao', e.target.value)} />
           </div>
         </div>
         <div className="mt-4">
           <label className="block text-sm font-medium text-gray-700 mb-2">Endereço Completo</label>
           <div className="grid grid-cols-1 md:grid-cols-6 gap-3">
-             <div className="md:col-span-4"><input placeholder="Rua / Avenida" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratante.endereco.rua} onChange={(e) => updateContratanteAddress('rua', e.target.value)} /></div>
-             <div className="md:col-span-2"><input placeholder="Número" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratante.endereco.numero} onChange={(e) => updateContratanteAddress('numero', e.target.value)} /></div>
-             <div className="md:col-span-2"><input placeholder="Bairro" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratante.endereco.bairro} onChange={(e) => updateContratanteAddress('bairro', e.target.value)} /></div>
-             <div className="md:col-span-2"><input placeholder="Cidade" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratante.endereco.cidade} onChange={(e) => updateContratanteAddress('cidade', e.target.value)} /></div>
-             <div className="md:col-span-1"><input placeholder="UF" maxLength={2} className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratante.endereco.uf} onChange={(e) => updateContratanteAddress('uf', e.target.value)} /></div>
-             <div className="md:col-span-1"><input placeholder="CEP" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratante.endereco.cep} onChange={(e) => updateContratanteAddress('cep', e.target.value)} /></div>
+             <div className="md:col-span-4"><input required placeholder="Rua / Avenida *" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratante.endereco.rua} onChange={(e) => updateContratanteAddress('rua', e.target.value)} /></div>
+             <div className="md:col-span-2"><input required placeholder="Número *" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratante.endereco.numero} onChange={(e) => updateContratanteAddress('numero', e.target.value)} /></div>
+             <div className="md:col-span-2"><input required placeholder="Bairro *" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratante.endereco.bairro} onChange={(e) => updateContratanteAddress('bairro', e.target.value)} /></div>
+             <div className="md:col-span-2"><input required placeholder="Cidade *" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratante.endereco.cidade} onChange={(e) => updateContratanteAddress('cidade', e.target.value)} /></div>
+             <div className="md:col-span-1"><input required placeholder="UF *" maxLength={2} className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratante.endereco.uf} onChange={(e) => updateContratanteAddress('uf', e.target.value)} /></div>
+             <div className="md:col-span-1"><input required placeholder="CEP *" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratante.endereco.cep} onChange={(e) => updateContratanteAddress('cep', e.target.value)} /></div>
           </div>
         </div>
       </section>
@@ -198,24 +210,24 @@ export const ContractForm: React.FC<ContractFormProps> = ({ data, onChange, onPr
         <h3 className="text-lg font-medium text-blue-800 mb-4 bg-blue-50 p-2 rounded">{currentLabels.partyB}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="col-span-1 md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
-            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratado.nome} onChange={(e) => updateContratado('nome', e.target.value)} />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Nome Completo <span className="text-red-500">*</span></label>
+            <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratado.nome} onChange={(e) => updateContratado('nome', e.target.value)} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">CPF / CNPJ</label>
-            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratado.cpfCnpj} onChange={(e) => updateContratado('cpfCnpj', e.target.value)} />
+            <label className="block text-sm font-medium text-gray-700 mb-1">CPF / CNPJ <span className="text-red-500">*</span></label>
+            <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratado.cpfCnpj} onChange={(e) => updateContratado('cpfCnpj', e.target.value)} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">RG</label>
-            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratado.rg} onChange={(e) => updateContratado('rg', e.target.value)} />
+            <label className="block text-sm font-medium text-gray-700 mb-1">RG <span className="text-red-500">*</span></label>
+            <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratado.rg} onChange={(e) => updateContratado('rg', e.target.value)} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nacionalidade</label>
-            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratado.nacionalidade} onChange={(e) => updateContratado('nacionalidade', e.target.value)} />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Nacionalidade <span className="text-red-500">*</span></label>
+            <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratado.nacionalidade} onChange={(e) => updateContratado('nacionalidade', e.target.value)} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Estado Civil</label>
-            <select className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratado.estadoCivil} onChange={(e) => updateContratado('estadoCivil', e.target.value)}>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Estado Civil <span className="text-red-500">*</span></label>
+            <select required className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratado.estadoCivil} onChange={(e) => updateContratado('estadoCivil', e.target.value)}>
                <option value="">Selecione...</option>
               <option value="Solteiro(a)">Solteiro(a)</option>
               <option value="Casado(a)">Casado(a)</option>
@@ -225,19 +237,19 @@ export const ContractForm: React.FC<ContractFormProps> = ({ data, onChange, onPr
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Profissão</label>
-            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratado.profissao} onChange={(e) => updateContratado('profissao', e.target.value)} />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Profissão <span className="text-red-500">*</span></label>
+            <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratado.profissao} onChange={(e) => updateContratado('profissao', e.target.value)} />
           </div>
         </div>
         <div className="mt-4">
           <label className="block text-sm font-medium text-gray-700 mb-2">Endereço Completo</label>
           <div className="grid grid-cols-1 md:grid-cols-6 gap-3">
-             <div className="md:col-span-4"><input placeholder="Rua / Avenida" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratado.endereco.rua} onChange={(e) => updateContratadoAddress('rua', e.target.value)} /></div>
-             <div className="md:col-span-2"><input placeholder="Número" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratado.endereco.numero} onChange={(e) => updateContratadoAddress('numero', e.target.value)} /></div>
-             <div className="md:col-span-2"><input placeholder="Bairro" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratado.endereco.bairro} onChange={(e) => updateContratadoAddress('bairro', e.target.value)} /></div>
-             <div className="md:col-span-2"><input placeholder="Cidade" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratado.endereco.cidade} onChange={(e) => updateContratadoAddress('cidade', e.target.value)} /></div>
-             <div className="md:col-span-1"><input placeholder="UF" maxLength={2} className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratado.endereco.uf} onChange={(e) => updateContratadoAddress('uf', e.target.value)} /></div>
-             <div className="md:col-span-1"><input placeholder="CEP" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratado.endereco.cep} onChange={(e) => updateContratadoAddress('cep', e.target.value)} /></div>
+             <div className="md:col-span-4"><input required placeholder="Rua / Avenida *" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratado.endereco.rua} onChange={(e) => updateContratadoAddress('rua', e.target.value)} /></div>
+             <div className="md:col-span-2"><input required placeholder="Número *" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratado.endereco.numero} onChange={(e) => updateContratadoAddress('numero', e.target.value)} /></div>
+             <div className="md:col-span-2"><input required placeholder="Bairro *" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratado.endereco.bairro} onChange={(e) => updateContratadoAddress('bairro', e.target.value)} /></div>
+             <div className="md:col-span-2"><input required placeholder="Cidade *" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratado.endereco.cidade} onChange={(e) => updateContratadoAddress('cidade', e.target.value)} /></div>
+             <div className="md:col-span-1"><input required placeholder="UF *" maxLength={2} className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratado.endereco.uf} onChange={(e) => updateContratadoAddress('uf', e.target.value)} /></div>
+             <div className="md:col-span-1"><input required placeholder="CEP *" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratado.endereco.cep} onChange={(e) => updateContratadoAddress('cep', e.target.value)} /></div>
           </div>
         </div>
       </section>
@@ -248,28 +260,28 @@ export const ContractForm: React.FC<ContractFormProps> = ({ data, onChange, onPr
           <h3 className="text-lg font-medium text-blue-800 mb-4 bg-blue-50 p-2 rounded">Dados do Veículo</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Marca / Modelo</label>
-              <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.veiculo.marcaModelo} onChange={(e) => updateVehicle('marcaModelo', e.target.value)} placeholder="Ex: Fiat Palio Fire" />
+              <label className="block text-sm font-medium text-gray-700 mb-1">Marca / Modelo <span className="text-red-500">*</span></label>
+              <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.veiculo.marcaModelo} onChange={(e) => updateVehicle('marcaModelo', e.target.value)} placeholder="Ex: Fiat Palio Fire" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Ano de Fabricação</label>
-              <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.veiculo.ano} onChange={(e) => updateVehicle('ano', e.target.value)} placeholder="Ex: 2015/2016" />
+              <label className="block text-sm font-medium text-gray-700 mb-1">Ano de Fabricação <span className="text-red-500">*</span></label>
+              <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.veiculo.ano} onChange={(e) => updateVehicle('ano', e.target.value)} placeholder="Ex: 2015/2016" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Placa</label>
-              <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.veiculo.placa} onChange={(e) => updateVehicle('placa', e.target.value)} placeholder="Ex: ABC-1234" />
+              <label className="block text-sm font-medium text-gray-700 mb-1">Placa <span className="text-red-500">*</span></label>
+              <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.veiculo.placa} onChange={(e) => updateVehicle('placa', e.target.value)} placeholder="Ex: ABC-1234" />
             </div>
              <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">RENAVAM</label>
-              <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.veiculo.renavam} onChange={(e) => updateVehicle('renavam', e.target.value)} />
+              <label className="block text-sm font-medium text-gray-700 mb-1">RENAVAM <span className="text-red-500">*</span></label>
+              <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.veiculo.renavam} onChange={(e) => updateVehicle('renavam', e.target.value)} />
             </div>
              <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Chassi</label>
-              <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.veiculo.chassi} onChange={(e) => updateVehicle('chassi', e.target.value)} />
+              <label className="block text-sm font-medium text-gray-700 mb-1">Chassi <span className="text-red-500">*</span></label>
+              <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.veiculo.chassi} onChange={(e) => updateVehicle('chassi', e.target.value)} />
             </div>
              <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Cor</label>
-              <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.veiculo.cor} onChange={(e) => updateVehicle('cor', e.target.value)} />
+              <label className="block text-sm font-medium text-gray-700 mb-1">Cor <span className="text-red-500">*</span></label>
+              <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.veiculo.cor} onChange={(e) => updateVehicle('cor', e.target.value)} />
             </div>
           </div>
         </section>
@@ -285,26 +297,26 @@ export const ContractForm: React.FC<ContractFormProps> = ({ data, onChange, onPr
              {isRural && (
                <div className="md:col-span-6 grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Nome da Propriedade</label>
-                    <input className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.nomePropriedade} onChange={(e) => updateImovel('nomePropriedade', e.target.value)} placeholder="Ex: Fazenda Santa Maria" />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Nome da Propriedade <span className="text-red-500">*</span></label>
+                    <input required className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.nomePropriedade} onChange={(e) => updateImovel('nomePropriedade', e.target.value)} placeholder="Ex: Fazenda Santa Maria" />
                  </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Matrícula / CCIR / NIRF</label>
-                    <input className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.matricula} onChange={(e) => updateImovel('matricula', e.target.value)} placeholder="Ex: 12.345.678" />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Matrícula / CCIR / NIRF <span className="text-red-500">*</span></label>
+                    <input required className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.matricula} onChange={(e) => updateImovel('matricula', e.target.value)} placeholder="Ex: 12.345.678" />
                  </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Área Total (Hectares)</label>
-                    <input className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.area} onChange={(e) => updateImovel('area', e.target.value)} placeholder="Ex: 50 hectares" />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Área Total (Hectares) <span className="text-red-500">*</span></label>
+                    <input required className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.area} onChange={(e) => updateImovel('area', e.target.value)} placeholder="Ex: 50 hectares" />
                  </div>
                </div>
              )}
              
-            <div className="md:col-span-4"><input placeholder={isRural ? "Localização / Estrada de Acesso" : "Rua do Imóvel"} className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.rua} onChange={(e) => updateImovel('rua', e.target.value)} /></div>
-            <div className="md:col-span-2"><input placeholder="Número / Km" className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.numero} onChange={(e) => updateImovel('numero', e.target.value)} /></div>
-            <div className="md:col-span-2"><input placeholder="Bairro / Região" className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.bairro} onChange={(e) => updateImovel('bairro', e.target.value)} /></div>
-            <div className="md:col-span-2"><input placeholder="Cidade" className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.cidade} onChange={(e) => updateImovel('cidade', e.target.value)} /></div>
-            <div className="md:col-span-1"><input placeholder="UF" maxLength={2} className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.uf} onChange={(e) => updateImovel('uf', e.target.value)} /></div>
-            <div className="md:col-span-1"><input placeholder="CEP" className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.cep} onChange={(e) => updateImovel('cep', e.target.value)} /></div>
+            <div className="md:col-span-4"><input required placeholder={isRural ? "Localização / Estrada de Acesso *" : "Rua do Imóvel *"} className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.rua} onChange={(e) => updateImovel('rua', e.target.value)} /></div>
+            <div className="md:col-span-2"><input required placeholder="Número / Km *" className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.numero} onChange={(e) => updateImovel('numero', e.target.value)} /></div>
+            <div className="md:col-span-2"><input required placeholder="Bairro / Região *" className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.bairro} onChange={(e) => updateImovel('bairro', e.target.value)} /></div>
+            <div className="md:col-span-2"><input required placeholder="Cidade *" className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.cidade} onChange={(e) => updateImovel('cidade', e.target.value)} /></div>
+            <div className="md:col-span-1"><input required placeholder="UF *" maxLength={2} className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.uf} onChange={(e) => updateImovel('uf', e.target.value)} /></div>
+            <div className="md:col-span-1"><input required placeholder="CEP *" className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.cep} onChange={(e) => updateImovel('cep', e.target.value)} /></div>
           </div>
         </section>
       )}
@@ -317,35 +329,35 @@ export const ContractForm: React.FC<ContractFormProps> = ({ data, onChange, onPr
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {!hideValue && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{currentLabels.valueLabel}</label>
-                <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.servico.valor} onChange={(e) => updateServico('valor', e.target.value)} placeholder="Ex: 1.500,00" />
+                <label className="block text-sm font-medium text-gray-700 mb-1">{currentLabels.valueLabel} <span className="text-red-500">*</span></label>
+                <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.servico.valor} onChange={(e) => updateServico('valor', e.target.value)} placeholder="Ex: 1.500,00" />
               </div>
             )}
              <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{currentLabels.termLabel}</label>
-              <input type={isFamily ? "date" : "text"} className="w-full border border-gray-300 rounded px-3 py-2" value={data.servico.prazo} onChange={(e) => updateServico('prazo', e.target.value)} placeholder={data.type === 'servico' ? "Ex: 30 dias" : "Ex: 12 meses"} />
+              <label className="block text-sm font-medium text-gray-700 mb-1">{currentLabels.termLabel} <span className="text-red-500">*</span></label>
+              <input required type={isFamily ? "date" : "text"} className="w-full border border-gray-300 rounded px-3 py-2" value={data.servico.prazo} onChange={(e) => updateServico('prazo', e.target.value)} placeholder={data.type === 'servico' ? "Ex: 30 dias" : "Ex: 12 meses"} />
             </div>
              {!isFamily && (
                <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Data de Início do Contrato</label>
-                <input type="date" className="w-full border border-gray-300 rounded px-3 py-2" value={data.servico.dataInicio} onChange={(e) => updateServico('dataInicio', e.target.value)} />
+                <label className="block text-sm font-medium text-gray-700 mb-1">Data de Início do Contrato <span className="text-red-500">*</span></label>
+                <input required type="date" className="w-full border border-gray-300 rounded px-3 py-2" value={data.servico.dataInicio} onChange={(e) => updateServico('dataInicio', e.target.value)} />
               </div>
              )}
              <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Cidade do Foro (Comarca)</label>
-              <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.servico.foro} onChange={(e) => updateServico('foro', e.target.value)} placeholder="Ex: São Paulo" />
+              <label className="block text-sm font-medium text-gray-700 mb-1">Cidade do Foro (Comarca) <span className="text-red-500">*</span></label>
+              <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.servico.foro} onChange={(e) => updateServico('foro', e.target.value)} placeholder="Ex: São Paulo" />
             </div>
              {!isFamily && (
                <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Multa por Descumprimento</label>
-                <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.servico.multa} onChange={(e) => updateServico('multa', e.target.value)} />
+                <label className="block text-sm font-medium text-gray-700 mb-1">Multa por Descumprimento <span className="text-red-500">*</span></label>
+                <input required type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.servico.multa} onChange={(e) => updateServico('multa', e.target.value)} />
               </div>
              )}
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{currentLabels.objectLabel}</label>
-            <textarea className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-24" value={data.servico.objeto} onChange={(e) => updateServico('objeto', e.target.value)} placeholder={currentLabels.objectPlaceholder}></textarea>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{currentLabels.objectLabel} {['servico', 'residencial', 'comercial', 'arrendamentoRural', 'parceriaAgricola', 'veiculo'].includes(data.type) && <span className="text-red-500">*</span>}</label>
+            <textarea required={['servico', 'comercial', 'arrendamentoRural', 'parceriaAgricola', 'veiculo'].includes(data.type)} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-24" value={data.servico.objeto} onChange={(e) => updateServico('objeto', e.target.value)} placeholder={currentLabels.objectPlaceholder}></textarea>
           </div>
         </div>
       </section>
@@ -354,19 +366,42 @@ export const ContractForm: React.FC<ContractFormProps> = ({ data, onChange, onPr
       <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
         <label className="flex items-center space-x-3 mb-4 cursor-pointer">
           <input required type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="w-5 h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" />
-          <span className="text-sm text-gray-700 font-medium">Li e aceito os <a href="#" className="text-blue-600 underline">Termos de Uso</a>.</span>
+          <span className="text-sm text-gray-700 font-medium">
+            Declaro que as informações acima são verdadeiras e li os{' '}
+            <a 
+              href="#" 
+              onClick={(e) => { e.preventDefault(); onNavigate('terms'); }} 
+              className="text-blue-600 underline hover:text-blue-800"
+            >
+              Termos de Uso
+            </a>.
+          </span>
         </label>
         
-        <button 
-          type="button"
-          onClick={handlePrintClick}
-          disabled={!agreed}
-          className={`w-full py-4 px-6 rounded-lg font-bold text-white text-lg transition-all shadow-md ${agreed ? 'bg-green-600 hover:bg-green-700 transform hover:-translate-y-1' : 'bg-gray-400 cursor-not-allowed opacity-70'}`}
-        >
-          {agreed ? 'VALIDAR E BAIXAR PDF' : 'Aceite os termos para baixar'}
-        </button>
+        <div className="flex flex-col sm:flex-row gap-3 mt-4">
+          <button 
+            type="button"
+            onClick={() => agreed && handleAction('print')}
+            disabled={!agreed}
+            className={`flex-1 py-4 px-6 rounded-lg font-bold text-white text-lg transition-all shadow-md flex items-center justify-center ${agreed ? 'bg-blue-600 hover:bg-blue-700 transform hover:-translate-y-1' : 'bg-gray-400 cursor-not-allowed opacity-70'}`}
+          >
+            <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+            IMPRIMIR
+          </button>
+
+          <button 
+            type="button"
+            onClick={() => agreed && handleAction('download')}
+            disabled={!agreed}
+            className={`flex-1 py-4 px-6 rounded-lg font-bold text-white text-lg transition-all shadow-md flex items-center justify-center ${agreed ? 'bg-green-600 hover:bg-green-700 transform hover:-translate-y-1' : 'bg-gray-400 cursor-not-allowed opacity-70'}`}
+          >
+            <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+            BAIXAR PDF
+          </button>
+        </div>
+        
         <p className="text-xs text-center text-gray-500 mt-2">
-          Verifique seus dados antes de baixar.
+          Verifique se todos os campos obrigatórios (*) estão preenchidos antes de gerar o documento.
         </p>
       </div>
 
