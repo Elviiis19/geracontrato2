@@ -1,0 +1,378 @@
+import React from 'react';
+import { ContractData, PartyDetails, ServiceDetails } from '../types';
+import { trackEvent } from '../utils/analytics';
+
+interface ContractFormProps {
+  data: ContractData;
+  onChange: (newData: ContractData) => void;
+  onPrint: () => void;
+}
+
+export const ContractForm: React.FC<ContractFormProps> = ({ data, onChange, onPrint }) => {
+  const [agreed, setAgreed] = React.useState(false);
+
+  // Labels configuration based on contract type
+  const labels = {
+    servico: {
+      title: 'Contrato de Prestação de Serviços',
+      partyA: 'Dados do Contratante (Cliente)',
+      partyB: 'Dados do Contratado (Prestador)',
+      objectLabel: 'Objeto do Contrato (Descrição do Serviço)',
+      objectPlaceholder: 'Ex: Prestação de serviços de consultoria financeira...',
+      valueLabel: 'Valor Total (R$)',
+      termLabel: 'Prazo de Execução'
+    },
+    residencial: {
+      title: 'Contrato de Aluguel Residencial',
+      partyA: 'Dados do Locador (Dono do Imóvel)',
+      partyB: 'Dados do Locatário (Inquilino)',
+      objectLabel: 'Descrição Adicional (Opcional)',
+      objectPlaceholder: 'Ex: O imóvel deve ser devolvido pintado...',
+      valueLabel: 'Valor do Aluguel Mensal (R$)',
+      termLabel: 'Prazo da Locação (Meses)'
+    },
+    comercial: {
+      title: 'Contrato de Aluguel Comercial',
+      partyA: 'Dados do Locador (Proprietário)',
+      partyB: 'Dados do Locatário (Empresa/Inquilino)',
+      objectLabel: 'Atividade Comercial Permitida',
+      objectPlaceholder: 'Ex: Escritório de Advocacia, Loja de Roupas...',
+      valueLabel: 'Valor do Aluguel Mensal (R$)',
+      termLabel: 'Prazo da Locação (Meses)'
+    },
+    arrendamentoRural: {
+      title: 'Contrato de Arrendamento Rural',
+      partyA: 'Dados do Arrendador (Dono da Terra)',
+      partyB: 'Dados do Arrendatário (Quem vai plantar/criar)',
+      objectLabel: 'Atividade (Cultivo/Criação)',
+      objectPlaceholder: 'Ex: Plantio de Soja, Criação de Gado Bovino...',
+      valueLabel: 'Valor do Arrendamento (R$ ou Sacas)',
+      termLabel: 'Prazo (Anos/Meses)'
+    },
+    parceriaAgricola: {
+      title: 'Contrato de Parceria Agrícola',
+      partyA: 'Dados do Parceiro Outorgante (Dono da Terra)',
+      partyB: 'Dados do Parceiro Outorgado (Quem vai trabalhar)',
+      objectLabel: 'Cultura / Atividade',
+      objectPlaceholder: 'Ex: Cultivo de Milho...',
+      valueLabel: 'Participação nos Lucros (%)',
+      termLabel: 'Prazo da Parceria'
+    },
+    veiculo: {
+      title: 'Contrato de Compra e Venda de Veículo',
+      partyA: 'Dados do Vendedor',
+      partyB: 'Dados do Comprador',
+      objectLabel: 'Condições do Veículo',
+      objectPlaceholder: 'Ex: Veículo entregue no estado em que se encontra...',
+      valueLabel: 'Valor da Venda (R$)',
+      termLabel: 'Prazo para Transferência (Dias)'
+    },
+    namoro: {
+      title: 'Contrato de Namoro',
+      partyA: 'Primeiro Declarante',
+      partyB: 'Segundo Declarante',
+      objectLabel: 'Declarações Adicionais',
+      objectPlaceholder: 'Ex: Ambos declaram manter residências separadas...',
+      valueLabel: 'Separação de Bens (Opcional)',
+      termLabel: 'Data de Início do Namoro'
+    },
+    uniaoEstavel: {
+      title: 'Contrato de União Estável',
+      partyA: 'Primeiro Convivente',
+      partyB: 'Segundo Convivente',
+      objectLabel: 'Regime de Bens',
+      objectPlaceholder: 'Ex: Comunhão Parcial de Bens...',
+      valueLabel: 'Patrimônio Inicial (Opcional)',
+      termLabel: 'Data de Início da União'
+    }
+  };
+
+  const currentLabels = labels[data.type];
+  
+  // Logic helpers
+  const isRental = ['residencial', 'comercial'].includes(data.type);
+  const isRural = ['arrendamentoRural', 'parceriaAgricola'].includes(data.type);
+  const isVehicle = data.type === 'veiculo';
+  const isFamily = ['namoro', 'uniaoEstavel'].includes(data.type);
+  const hideImovel = isVehicle || isFamily;
+  const hideValue = isFamily && data.type === 'namoro'; // Namoro usually doesn't involve values
+
+  const updateContratante = (field: string, value: string) => {
+    onChange({ ...data, contratante: { ...data.contratante, [field]: value } });
+  };
+
+  const updateContratanteAddress = (field: string, value: string) => {
+    onChange({
+      ...data,
+      contratante: { ...data.contratante, endereco: { ...data.contratante.endereco, [field]: value } }
+    });
+  };
+
+  const updateContratado = (field: string, value: string) => {
+    onChange({ ...data, contratado: { ...data.contratado, [field]: value } });
+  };
+
+  const updateContratadoAddress = (field: string, value: string) => {
+    onChange({
+      ...data,
+      contratado: { ...data.contratado, endereco: { ...data.contratado.endereco, [field]: value } }
+    });
+  };
+
+  const updateServico = (field: string, value: string) => {
+    onChange({ ...data, servico: { ...data.servico, [field]: value } });
+  };
+
+  const updateImovel = (field: string, value: string) => {
+    onChange({ ...data, imovel: { ...data.imovel, [field]: value } });
+  };
+
+  const updateVehicle = (field: string, value: string) => {
+    onChange({ ...data, veiculo: { ...data.veiculo, [field]: value } });
+  };
+
+  const handlePrintClick = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent any default button behavior
+    if (agreed) {
+      // Analytics: Track conversion
+      trackEvent('download_pdf', 'conversion', data.type);
+      onPrint();
+    }
+  };
+
+  return (
+    <form id="contractForm" className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+      <h2 className="text-xl font-semibold text-navy-900 mb-6 border-b pb-2">{currentLabels.title}</h2>
+
+      {/* PARTE A */}
+      <section className="mb-8">
+        <h3 className="text-lg font-medium text-blue-800 mb-4 bg-blue-50 p-2 rounded">{currentLabels.partyA}</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="col-span-1 md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
+            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratante.nome} onChange={(e) => updateContratante('nome', e.target.value)} placeholder="Ex: João da Silva" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">CPF / CNPJ</label>
+            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratante.cpfCnpj} onChange={(e) => updateContratante('cpfCnpj', e.target.value)} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">RG</label>
+            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratante.rg} onChange={(e) => updateContratante('rg', e.target.value)} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Nacionalidade</label>
+            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratante.nacionalidade} onChange={(e) => updateContratante('nacionalidade', e.target.value)} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Estado Civil</label>
+            <select className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratante.estadoCivil} onChange={(e) => updateContratante('estadoCivil', e.target.value)}>
+              <option value="">Selecione...</option>
+              <option value="Solteiro(a)">Solteiro(a)</option>
+              <option value="Casado(a)">Casado(a)</option>
+              <option value="Divorciado(a)">Divorciado(a)</option>
+              <option value="Viúvo(a)">Viúvo(a)</option>
+              <option value="Separado(a)">Separado(a)</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Profissão</label>
+            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratante.profissao} onChange={(e) => updateContratante('profissao', e.target.value)} />
+          </div>
+        </div>
+        <div className="mt-4">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Endereço Completo</label>
+          <div className="grid grid-cols-1 md:grid-cols-6 gap-3">
+             <div className="md:col-span-4"><input placeholder="Rua / Avenida" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratante.endereco.rua} onChange={(e) => updateContratanteAddress('rua', e.target.value)} /></div>
+             <div className="md:col-span-2"><input placeholder="Número" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratante.endereco.numero} onChange={(e) => updateContratanteAddress('numero', e.target.value)} /></div>
+             <div className="md:col-span-2"><input placeholder="Bairro" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratante.endereco.bairro} onChange={(e) => updateContratanteAddress('bairro', e.target.value)} /></div>
+             <div className="md:col-span-2"><input placeholder="Cidade" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratante.endereco.cidade} onChange={(e) => updateContratanteAddress('cidade', e.target.value)} /></div>
+             <div className="md:col-span-1"><input placeholder="UF" maxLength={2} className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratante.endereco.uf} onChange={(e) => updateContratanteAddress('uf', e.target.value)} /></div>
+             <div className="md:col-span-1"><input placeholder="CEP" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratante.endereco.cep} onChange={(e) => updateContratanteAddress('cep', e.target.value)} /></div>
+          </div>
+        </div>
+      </section>
+
+      {/* PARTE B */}
+      <section className="mb-8">
+        <h3 className="text-lg font-medium text-blue-800 mb-4 bg-blue-50 p-2 rounded">{currentLabels.partyB}</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="col-span-1 md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
+            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratado.nome} onChange={(e) => updateContratado('nome', e.target.value)} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">CPF / CNPJ</label>
+            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratado.cpfCnpj} onChange={(e) => updateContratado('cpfCnpj', e.target.value)} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">RG</label>
+            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratado.rg} onChange={(e) => updateContratado('rg', e.target.value)} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Nacionalidade</label>
+            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratado.nacionalidade} onChange={(e) => updateContratado('nacionalidade', e.target.value)} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Estado Civil</label>
+            <select className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratado.estadoCivil} onChange={(e) => updateContratado('estadoCivil', e.target.value)}>
+               <option value="">Selecione...</option>
+              <option value="Solteiro(a)">Solteiro(a)</option>
+              <option value="Casado(a)">Casado(a)</option>
+              <option value="Divorciado(a)">Divorciado(a)</option>
+              <option value="Viúvo(a)">Viúvo(a)</option>
+              <option value="Separado(a)">Separado(a)</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Profissão</label>
+            <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.contratado.profissao} onChange={(e) => updateContratado('profissao', e.target.value)} />
+          </div>
+        </div>
+        <div className="mt-4">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Endereço Completo</label>
+          <div className="grid grid-cols-1 md:grid-cols-6 gap-3">
+             <div className="md:col-span-4"><input placeholder="Rua / Avenida" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratado.endereco.rua} onChange={(e) => updateContratadoAddress('rua', e.target.value)} /></div>
+             <div className="md:col-span-2"><input placeholder="Número" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratado.endereco.numero} onChange={(e) => updateContratadoAddress('numero', e.target.value)} /></div>
+             <div className="md:col-span-2"><input placeholder="Bairro" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratado.endereco.bairro} onChange={(e) => updateContratadoAddress('bairro', e.target.value)} /></div>
+             <div className="md:col-span-2"><input placeholder="Cidade" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratado.endereco.cidade} onChange={(e) => updateContratadoAddress('cidade', e.target.value)} /></div>
+             <div className="md:col-span-1"><input placeholder="UF" maxLength={2} className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratado.endereco.uf} onChange={(e) => updateContratadoAddress('uf', e.target.value)} /></div>
+             <div className="md:col-span-1"><input placeholder="CEP" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" value={data.contratado.endereco.cep} onChange={(e) => updateContratadoAddress('cep', e.target.value)} /></div>
+          </div>
+        </div>
+      </section>
+
+      {/* DADOS DO VEÍCULO */}
+      {isVehicle && (
+        <section className="mb-8">
+          <h3 className="text-lg font-medium text-blue-800 mb-4 bg-blue-50 p-2 rounded">Dados do Veículo</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Marca / Modelo</label>
+              <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.veiculo.marcaModelo} onChange={(e) => updateVehicle('marcaModelo', e.target.value)} placeholder="Ex: Fiat Palio Fire" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Ano de Fabricação</label>
+              <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.veiculo.ano} onChange={(e) => updateVehicle('ano', e.target.value)} placeholder="Ex: 2015/2016" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Placa</label>
+              <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.veiculo.placa} onChange={(e) => updateVehicle('placa', e.target.value)} placeholder="Ex: ABC-1234" />
+            </div>
+             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">RENAVAM</label>
+              <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.veiculo.renavam} onChange={(e) => updateVehicle('renavam', e.target.value)} />
+            </div>
+             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Chassi</label>
+              <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.veiculo.chassi} onChange={(e) => updateVehicle('chassi', e.target.value)} />
+            </div>
+             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Cor</label>
+              <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.veiculo.cor} onChange={(e) => updateVehicle('cor', e.target.value)} />
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* DADOS DO IMÓVEL (PARA ALUGUEL OU RURAL) */}
+      {!hideImovel && (
+        <section className="mb-8">
+          <h3 className="text-lg font-medium text-blue-800 mb-4 bg-blue-50 p-2 rounded">
+             {isRural ? 'Dados do Imóvel Rural' : 'Dados do Imóvel Objeto de Locação'}
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-6 gap-3">
+             {isRural && (
+               <div className="md:col-span-6 grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
+                 <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Nome da Propriedade</label>
+                    <input className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.nomePropriedade} onChange={(e) => updateImovel('nomePropriedade', e.target.value)} placeholder="Ex: Fazenda Santa Maria" />
+                 </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Matrícula / CCIR / NIRF</label>
+                    <input className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.matricula} onChange={(e) => updateImovel('matricula', e.target.value)} placeholder="Ex: 12.345.678" />
+                 </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Área Total (Hectares)</label>
+                    <input className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.area} onChange={(e) => updateImovel('area', e.target.value)} placeholder="Ex: 50 hectares" />
+                 </div>
+               </div>
+             )}
+             
+            <div className="md:col-span-4"><input placeholder={isRural ? "Localização / Estrada de Acesso" : "Rua do Imóvel"} className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.rua} onChange={(e) => updateImovel('rua', e.target.value)} /></div>
+            <div className="md:col-span-2"><input placeholder="Número / Km" className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.numero} onChange={(e) => updateImovel('numero', e.target.value)} /></div>
+            <div className="md:col-span-2"><input placeholder="Bairro / Região" className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.bairro} onChange={(e) => updateImovel('bairro', e.target.value)} /></div>
+            <div className="md:col-span-2"><input placeholder="Cidade" className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.cidade} onChange={(e) => updateImovel('cidade', e.target.value)} /></div>
+            <div className="md:col-span-1"><input placeholder="UF" maxLength={2} className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.uf} onChange={(e) => updateImovel('uf', e.target.value)} /></div>
+            <div className="md:col-span-1"><input placeholder="CEP" className="w-full border border-gray-300 rounded px-3 py-2" value={data.imovel.cep} onChange={(e) => updateImovel('cep', e.target.value)} /></div>
+          </div>
+        </section>
+      )}
+
+      {/* DETALHES GERAIS */}
+      <section className="mb-8">
+        <h3 className="text-lg font-medium text-blue-800 mb-4 bg-blue-50 p-2 rounded">Detalhes e Prazos</h3>
+        <div className="grid grid-cols-1 gap-4">
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {!hideValue && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{currentLabels.valueLabel}</label>
+                <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.servico.valor} onChange={(e) => updateServico('valor', e.target.value)} placeholder="Ex: 1.500,00" />
+              </div>
+            )}
+             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{currentLabels.termLabel}</label>
+              <input type={isFamily ? "date" : "text"} className="w-full border border-gray-300 rounded px-3 py-2" value={data.servico.prazo} onChange={(e) => updateServico('prazo', e.target.value)} placeholder={data.type === 'servico' ? "Ex: 30 dias" : "Ex: 12 meses"} />
+            </div>
+             {!isFamily && (
+               <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Data de Início do Contrato</label>
+                <input type="date" className="w-full border border-gray-300 rounded px-3 py-2" value={data.servico.dataInicio} onChange={(e) => updateServico('dataInicio', e.target.value)} />
+              </div>
+             )}
+             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Cidade do Foro (Comarca)</label>
+              <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.servico.foro} onChange={(e) => updateServico('foro', e.target.value)} placeholder="Ex: São Paulo" />
+            </div>
+             {!isFamily && (
+               <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Multa por Descumprimento</label>
+                <input type="text" className="w-full border border-gray-300 rounded px-3 py-2" value={data.servico.multa} onChange={(e) => updateServico('multa', e.target.value)} />
+              </div>
+             )}
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{currentLabels.objectLabel}</label>
+            <textarea className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-24" value={data.servico.objeto} onChange={(e) => updateServico('objeto', e.target.value)} placeholder={currentLabels.objectPlaceholder}></textarea>
+          </div>
+        </div>
+      </section>
+
+      {/* FINALIZAÇÃO */}
+      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+        <label className="flex items-center space-x-3 mb-4 cursor-pointer">
+          <input required type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="w-5 h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" />
+          <span className="text-sm text-gray-700 font-medium">Li e aceito os <a href="#" className="text-blue-600 underline">Termos de Uso</a>.</span>
+        </label>
+        
+        <button 
+          type="button"
+          onClick={handlePrintClick}
+          disabled={!agreed}
+          className={`w-full py-4 px-6 rounded-lg font-bold text-white text-lg transition-all shadow-md ${agreed ? 'bg-green-600 hover:bg-green-700 transform hover:-translate-y-1' : 'bg-gray-400 cursor-not-allowed opacity-70'}`}
+        >
+          {agreed ? 'VALIDAR E BAIXAR PDF' : 'Aceite os termos para baixar'}
+        </button>
+        <p className="text-xs text-center text-gray-500 mt-2">
+          Verifique seus dados antes de baixar.
+        </p>
+      </div>
+
+      <div className="mt-6 p-3 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-800">
+        <strong>Aviso Legal:</strong> Este site fornece modelos automatizados e não substitui a consultoria de um advogado. O Gera Contrato não se responsabiliza pelo uso indevido deste documento.
+      </div>
+    </form>
+  );
+};
