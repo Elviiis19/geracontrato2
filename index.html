@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerar Contrato Online em PDF: Rápido e Grátis | Gera Contrato</title>
+    <meta name="description" content="Ferramenta gratuita para gerar contratos em PDF. Modelos de Aluguel, Serviços, Rural, Agronegócio, Veículos e União Estável. Baseado na Legislação Brasileira. Sem cadastro." />
+    <meta name="author" content="Elvis Dias" />
+    <meta name="keywords" content="gerar contrato online, contrato pdf grátis, contrato de aluguel, contrato prestação serviços, contrato rural, arrendamento rural, parceria agrícola, contrato união estável" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://geracontrato.com.br/" />
+    <meta property="og:title" content="Gerar Contrato Online em PDF: Rápido e Grátis" />
+    <meta property="og:description" content="Crie contratos profissionais de prestação de serviços, aluguel e venda de veículos gratuitamente. Baseado na lei brasileira." />
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              navy: {
+                800: '#1e3a8a',
+                900: '#172554',
+              }
+            },
+            screens: {
+              'print': {'raw': 'print'},
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.3s ease-in-out',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+
+    <!-- Schema Markup (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Gera Contrato",
+      "url": "https://geracontrato.com.br",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web Browser (Chrome, Safari, Firefox, Edge)",
+      "browserRequirements": "Requires JavaScript",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "BRL",
+        "category": "Free"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Elvis Dias"
+      },
+      "description": "Ferramenta online gratuita para gerar contratos jurídicos em PDF instantaneamente. Sem cadastro.",
+      "featureList": [
+        "Gerador de Contrato de Prestação de Serviços",
+        "Gerador de Contrato de Aluguel Residencial e Comercial",
+        "Gerador de Contrato de Arrendamento Rural e Parceria Agrícola",
+        "Gerador de Contrato de Compra e Venda de Veículos",
+        "Gerador de Declaração de União Estável e Namoro"
+      ],
+      "isAccessibleForFree": true,
+      "softwareVersion": "1.0"
+    }
+    </script>
+    
+    <style>
+      @media print {
+        @page { margin: 0; size: auto; }
+        body { -webkit-print-color-adjust: exact; }
+      }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "vite": "https://esm.sh/vite@^7.3.0",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-gray-50 text-slate-800 font-sans antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/index.tsx"></script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
