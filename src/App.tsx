@@ -6,7 +6,7 @@ const Footer = React.lazy(() => import('./components/Footer').then(module => ({ 
 import { HomePage } from './components/HomePage';
 import { ContractData, initialPartyState, initialServiceState, initialImovelState, initialVehicleState, PageView, ContractType } from './types';
 import { trackPageView } from './utils/analytics';
-import { getRouteByPath, getRouteByView } from './routes';
+import { getRouteByPath, getRouteByView, RouteConfig } from './routes';
 
 // Lazy load heavy components to reduce initial bundle size (Performance 100%)
 const ContractForm = React.lazy(() => import('./components/ContractForm').then(module => ({ default: module.ContractForm })));
@@ -67,6 +67,7 @@ const App: React.FC = () => {
   // SEO & Analytics Side Effects
   useEffect(() => {
     const activeRoute = getRouteByView(currentPage);
+    const canonicalUrl = `https://geracontrato.com.br${activeRoute.path === '/' ? '' : activeRoute.path}`;
 
     // 1. Update Document Title
     document.title = activeRoute.title;
@@ -80,10 +81,76 @@ const App: React.FC = () => {
     // 3. Update Canonical URL
     let linkCanonical = document.querySelector('link[rel="canonical"]');
     if (linkCanonical) {
-      linkCanonical.setAttribute('href', `https://geracontrato.com.br${activeRoute.path === '/' ? '' : activeRoute.path}`);
+      linkCanonical.setAttribute('href', canonicalUrl);
     }
 
-    // 4. Track Page View
+    // 4. Update Open Graph Tags (Facebook/WhatsApp)
+    const updateMeta = (property: string, content: string) => {
+      let meta = document.querySelector(`meta[property="${property}"]`);
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute('property', property);
+        document.head.appendChild(meta);
+      }
+      meta.setAttribute('content', content);
+    };
+
+    updateMeta('og:title', activeRoute.title);
+    updateMeta('og:description', activeRoute.description);
+    updateMeta('og:url', canonicalUrl);
+
+    // 5. Inject JSON-LD (Rich Snippets)
+    const updateJsonLd = (route: RouteConfig) => {
+      let script = document.querySelector('#dynamic-json-ld');
+      if (!script) {
+        script = document.createElement('script');
+        script.id = 'dynamic-json-ld';
+        script.setAttribute('type', 'application/ld+json');
+        document.head.appendChild(script);
+      }
+
+      // Default WebApplication Schema
+      const baseSchema = {
+        "@context": "https://schema.org",
+        "@type": route.schemaType || "WebApplication",
+        "name": route.title,
+        "url": canonicalUrl,
+        "description": route.description,
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "BRL"
+        }
+      };
+
+      // Add Breadcrumbs Schema
+      const breadcrumbSchema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://geracontrato.com.br"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": route.view === 'home' ? 'Início' : (route.seoContent?.title || route.title),
+            "item": canonicalUrl
+          }
+        ]
+      };
+      
+      script.textContent = JSON.stringify([baseSchema, breadcrumbSchema]);
+    };
+
+    updateJsonLd(activeRoute);
+
+    // 6. Track Page View
     trackPageView(currentPage);
 
   }, [currentPage]);
