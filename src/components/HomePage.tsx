@@ -1,8 +1,9 @@
 import React from 'react';
-import { ContractType } from '../types';
+import { PageView } from '../types';
+import { getRouteByView } from '../routes';
 
 interface HomePageProps {
-  onNavigate: (type: ContractType) => void;
+  onNavigate: (type: PageView) => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
@@ -13,12 +14,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     }
   };
 
+  const handleLinkClick = (view: PageView, e: React.MouseEvent) => {
+    e.preventDefault();
+    onNavigate(view);
+  };
+
   return (
     <div className="flex flex-col items-center w-full">
       
-      {/* Hero Section - Optimized: Replaced heavy Blur filters with Gradients for Mobile Performance */}
+      {/* Hero Section */}
       <section className="w-full bg-slate-900 relative overflow-hidden" aria-labelledby="hero-title">
-        {/* Optimized Background using CSS Gradients instead of blurred divs */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))] from-blue-900/40 via-slate-900 to-slate-900 pointer-events-none"></div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/30 via-transparent to-transparent pointer-events-none"></div>
 
@@ -67,7 +72,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* Trust Indicators (Features) - Improved Contrast */}
+      {/* Trust Indicators (Features) */}
       <section className="py-16 bg-white w-full border-b border-gray-100 shadow-sm relative z-20" aria-labelledby="features-title">
         <h2 id="features-title" className="sr-only">Diferenciais do Gera Contrato</h2>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -111,87 +116,86 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Cards with improved semantics (h3), focus states, and darker text for accessibility */}
             
             {/* Card 1: Serviços */}
-            <button onClick={() => onNavigate('servico')} className="group bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-left hover:border-blue-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <a href={getRouteByView('servico').path} onClick={(e) => handleLinkClick('servico', e)} className="group bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-left hover:border-blue-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 block">
               <div className="w-12 h-12 bg-blue-50 text-blue-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-blue-100">
                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
               </div>
               <h3 className="font-bold text-lg text-slate-900 mb-2 group-hover:text-blue-800">Prestação de Serviços</h3>
               <p className="text-sm text-slate-600 leading-relaxed">Para autônomos, freelancers e MEI. Defina objeto, prazos, valores e multa por descumprimento.</p>
               <span className="mt-4 inline-block text-sm font-semibold text-blue-700 group-hover:underline">Criar contrato &rarr;</span>
-            </button>
+            </a>
 
             {/* Card 2: Residencial */}
-            <button onClick={() => onNavigate('residencial')} className="group bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-left hover:border-emerald-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            <a href={getRouteByView('residencial').path} onClick={(e) => handleLinkClick('residencial', e)} className="group bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-left hover:border-emerald-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 block">
               <div className="w-12 h-12 bg-emerald-50 text-emerald-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-emerald-100">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
               </div>
               <h3 className="font-bold text-lg text-slate-900 mb-2 group-hover:text-emerald-800">Aluguel Residencial</h3>
               <p className="text-sm text-slate-600 leading-relaxed">Contrato de locação completo. Inclui cláusulas de vistoria, prazo, pagamento e garantias.</p>
               <span className="mt-4 inline-block text-sm font-semibold text-emerald-700 group-hover:underline">Criar contrato &rarr;</span>
-            </button>
+            </a>
 
             {/* Card 3: Comercial */}
-            <button onClick={() => onNavigate('comercial')} className="group bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-left hover:border-purple-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <a href={getRouteByView('comercial').path} onClick={(e) => handleLinkClick('comercial', e)} className="group bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-left hover:border-purple-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 block">
               <div className="w-12 h-12 bg-purple-50 text-purple-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-purple-100">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
               </div>
               <h3 className="font-bold text-lg text-slate-900 mb-2 group-hover:text-purple-800">Aluguel Comercial</h3>
               <p className="text-sm text-slate-600 leading-relaxed">Para lojas, salas e galpões. Estabeleça regras de negócio e finalidade do imóvel.</p>
               <span className="mt-4 inline-block text-sm font-semibold text-purple-700 group-hover:underline">Criar contrato &rarr;</span>
-            </button>
+            </a>
 
              {/* Card 4: Veículos */}
-             <button onClick={() => onNavigate('veiculo')} className="group bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-left hover:border-rose-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-rose-500">
+             <a href={getRouteByView('veiculo').path} onClick={(e) => handleLinkClick('veiculo', e)} className="group bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-left hover:border-rose-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-rose-500 block">
               <div className="w-12 h-12 bg-rose-50 text-rose-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-rose-100">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
               </div>
               <h3 className="font-bold text-lg text-slate-900 mb-2 group-hover:text-rose-800">Venda de Veículo</h3>
               <p className="text-sm text-slate-600 leading-relaxed">Recibo de compra e venda detalhado. Insira placa, Renavam, Chassi e condições.</p>
               <span className="mt-4 inline-block text-sm font-semibold text-rose-700 group-hover:underline">Criar contrato &rarr;</span>
-            </button>
+            </a>
 
              {/* Card 5: Arrendamento Rural */}
-             <button onClick={() => onNavigate('arrendamentoRural')} className="group bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-left hover:border-amber-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-amber-500">
+             <a href={getRouteByView('arrendamentoRural').path} onClick={(e) => handleLinkClick('arrendamentoRural', e)} className="group bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-left hover:border-amber-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-amber-500 block">
               <div className="w-12 h-12 bg-amber-50 text-amber-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-amber-100">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
               </div>
               <h3 className="font-bold text-lg text-slate-900 mb-2 group-hover:text-amber-800">Arrendamento Rural</h3>
               <p className="text-sm text-slate-600 leading-relaxed">Aluguel de terras para agropecuária. Conforme prazos do Estatuto da Terra.</p>
               <span className="mt-4 inline-block text-sm font-semibold text-amber-700 group-hover:underline">Criar contrato &rarr;</span>
-            </button>
+            </a>
 
              {/* Card 6: Parceria Agrícola */}
-             <button onClick={() => onNavigate('parceriaAgricola')} className="group bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-left hover:border-orange-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
+             <a href={getRouteByView('parceriaAgricola').path} onClick={(e) => handleLinkClick('parceriaAgricola', e)} className="group bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-left hover:border-orange-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-orange-500 block">
               <div className="w-12 h-12 bg-orange-50 text-orange-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-orange-100">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
               </div>
               <h3 className="font-bold text-lg text-slate-900 mb-2 group-hover:text-orange-800">Parceria Agrícola</h3>
               <p className="text-sm text-slate-600 leading-relaxed">Divisão de lucros e riscos na produção rural. Ideal para proprietários e produtores.</p>
               <span className="mt-4 inline-block text-sm font-semibold text-orange-700 group-hover:underline">Criar contrato &rarr;</span>
-            </button>
+            </a>
 
              {/* Card 7: União Estável */}
-             <button onClick={() => onNavigate('uniaoEstavel')} className="group bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-left hover:border-pink-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-pink-500">
+             <a href={getRouteByView('uniaoEstavel').path} onClick={(e) => handleLinkClick('uniaoEstavel', e)} className="group bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-left hover:border-pink-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-pink-500 block">
               <div className="w-12 h-12 bg-pink-50 text-pink-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-pink-100">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
               </div>
               <h3 className="font-bold text-lg text-slate-900 mb-2 group-hover:text-pink-800">União Estável</h3>
               <p className="text-sm text-slate-600 leading-relaxed">Formalize a convivência. Defina regime de bens (comunhão parcial, separação) e data de início.</p>
               <span className="mt-4 inline-block text-sm font-semibold text-pink-700 group-hover:underline">Criar contrato &rarr;</span>
-            </button>
+            </a>
 
              {/* Card 8: Contrato de Namoro */}
-             <button onClick={() => onNavigate('namoro')} className="group bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-left hover:border-red-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-500">
+             <a href={getRouteByView('namoro').path} onClick={(e) => handleLinkClick('namoro', e)} className="group bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-left hover:border-red-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-500 block">
               <div className="w-12 h-12 bg-red-50 text-red-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-red-100">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
               </div>
               <h3 className="font-bold text-lg text-slate-900 mb-2 group-hover:text-red-800">Contrato de Namoro</h3>
               <p className="text-sm text-slate-600 leading-relaxed">Proteção patrimonial. Declare que a relação não constitui família nem gera direitos de herança.</p>
               <span className="mt-4 inline-block text-sm font-semibold text-red-700 group-hover:underline">Criar contrato &rarr;</span>
-            </button>
+            </a>
             
           </div>
         </div>

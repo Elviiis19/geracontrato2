@@ -6,6 +6,7 @@ const Footer = React.lazy(() => import('./components/Footer').then(module => ({ 
 import { HomePage } from './components/HomePage';
 import { ContractData, initialPartyState, initialServiceState, initialImovelState, initialVehicleState, PageView, ContractType } from './types';
 import { trackPageView } from './utils/analytics';
+import { getRouteByPath, getRouteByView } from './routes';
 
 // Lazy load heavy components to reduce initial bundle size (Performance 100%)
 const ContractForm = React.lazy(() => import('./components/ContractForm').then(module => ({ default: module.ContractForm })));
@@ -22,102 +23,6 @@ const LoadingSpinner = () => (
   </div>
 );
 
-// --- ROUTING CONFIGURATION ---
-// Centralized configuration for Path <-> View mapping and SEO Metadata
-interface RouteConfig {
-  path: string;
-  view: PageView;
-  title: string;
-  description: string;
-}
-
-const routes: RouteConfig[] = [
-  {
-    path: '/',
-    view: 'home',
-    title: "Gerar Contrato Online PDF 2026: Rápido e Grátis | Gera Contrato",
-    description: "Ferramenta gratuita para gerar contratos em PDF. Modelos de Aluguel, Serviços, Rural, Agronegócio, Veículos e União Estável. Baseado na Legislação 2026."
-  },
-  {
-    path: '/contrato-de-prestacao-de-servicos',
-    view: 'servico',
-    title: "Contrato de Prestação de Serviços PDF Grátis | Simples e Rápido",
-    description: "Gerador de Contrato de Prestação de Serviços para autônomos e freelancers. Preencha e baixe o PDF pronto para imprimir. Válido juridicamente."
-  },
-  {
-    path: '/contrato-de-aluguel-residencial',
-    view: 'residencial',
-    title: "Contrato de Aluguel Residencial Simples PDF (2026) | Imprimir",
-    description: "Modelo de Contrato de Locação Residencial grátis. Preencha online e baixe em PDF. Contém cláusulas de garantia, vistoria e prazo."
-  },
-  {
-    path: '/contrato-de-aluguel-comercial',
-    view: 'comercial',
-    title: "Contrato de Aluguel Comercial PDF | Locação de Imóvel Comercial",
-    description: "Faça seu Contrato de Locação Comercial online. Ideal para lojas, salas e galpões. Baseado na Lei do Inquilinato. Grátis e seguro."
-  },
-  {
-    path: '/contrato-arrendamento-rural',
-    view: 'arrendamentoRural',
-    title: "Contrato de Arrendamento Rural PDF Grátis | Estatuto da Terra",
-    description: "Modelo de Arrendamento Rural para imprimir. Aluguel de terras para plantio e pecuária. Gere seu contrato agrário em conformidade com a lei."
-  },
-  {
-    path: '/contrato-parceria-agricola',
-    view: 'parceriaAgricola',
-    title: "Contrato de Parceria Agrícola PDF | Modelo Agrário 2026",
-    description: "Minuta de Parceria Agrícola gratuita. Defina a porcentagem de partilha e riscos. Documento jurídico pronto para o produtor rural."
-  },
-  {
-    path: '/contrato-compra-e-venda-veiculo',
-    view: 'veiculo',
-    title: "Contrato Compra e Venda de Veículo PDF | Carro e Moto",
-    description: "Recibo de Compra e Venda de Veículo (Carro/Moto). Gere o contrato com placa, Renavam e garantia. Segurança para vendedor e comprador."
-  },
-  {
-    path: '/declaracao-uniao-estavel',
-    view: 'uniaoEstavel',
-    title: "Contrato de União Estável Grátis PDF | Declaração de Convívio",
-    description: "Faça sua Declaração de União Estável online. Formalize o relacionamento e defina o regime de bens (Comunhão Parcial/Universal). Baixe agora."
-  },
-  {
-    path: '/contrato-de-namoro',
-    view: 'namoro',
-    title: "Contrato de Namoro PDF Grátis | Proteção de Bens",
-    description: "Modelo de Contrato de Namoro qualificado. Proteja seu patrimônio e afaste a União Estável. Gere o documento jurídico em PDF."
-  },
-  {
-    path: '/politica-de-privacidade',
-    view: 'privacy',
-    title: "Política de Privacidade | Gera Contrato",
-    description: "Entenda como protegemos seus dados. Processamento client-side seguro."
-  },
-  {
-    path: '/termos-de-uso',
-    view: 'terms',
-    title: "Termos de Uso | Gera Contrato",
-    description: "Termos e condições de uso da ferramenta Gera Contrato."
-  },
-  {
-    path: '/quem-somos',
-    view: 'about',
-    title: "Quem Somos | Gera Contrato",
-    description: "Conheça a missão do Gera Contrato de desburocratizar documentos no Brasil."
-  },
-  {
-    path: '/perguntas-frequentes',
-    view: 'faq',
-    title: "Perguntas Frequentes (FAQ) | Validade Jurídica e Dúvidas",
-    description: "Tire suas dúvidas sobre validade jurídica, custos, assinaturas e segurança dos contratos gerados."
-  },
-  {
-    path: '/politica-de-cookies',
-    view: 'cookies',
-    title: "Política de Cookies | Gera Contrato",
-    description: "Informações sobre o uso de cookies e tecnologias de rastreamento."
-  }
-];
-
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<PageView>('home');
   
@@ -131,16 +36,6 @@ const App: React.FC = () => {
   });
 
   // --- ROUTING LOGIC ---
-
-  // Helper: Find route config by view name
-  const getRouteByView = (view: PageView) => routes.find(r => r.view === view) || routes[0];
-
-  // Helper: Find route config by current window path
-  const getRouteByPath = (pathname: string) => {
-     // Handle trailing slashes or exact matches
-     const cleanPath = pathname.endsWith('/') && pathname.length > 1 ? pathname.slice(0, -1) : pathname;
-     return routes.find(r => r.path === cleanPath) || routes[0]; // Default to home if not found
-  };
 
   // Initialize State based on URL (Clean URLs)
   useEffect(() => {
@@ -225,14 +120,15 @@ const App: React.FC = () => {
           <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fade-in">
              <div className="mb-8 print:hidden flex items-center justify-between">
                <div>
-                 <button 
-                   onClick={() => handleNavigation('home')} 
+                 <a 
+                   href="/"
+                   onClick={(e) => { e.preventDefault(); handleNavigation('home'); }} 
                    className="flex items-center text-sm font-medium text-slate-500 hover:text-blue-700 transition-colors mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 -ml-2"
                    aria-label="Voltar para a página inicial"
                  >
                    <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
                    Voltar para Home
-                 </button>
+                 </a>
                  <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Preencha seu Contrato</h1>
                </div>
                <div className="text-sm text-slate-500 hidden sm:block bg-white px-3 py-1 rounded-full shadow-sm border border-slate-200">

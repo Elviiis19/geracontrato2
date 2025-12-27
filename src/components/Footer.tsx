@@ -1,5 +1,6 @@
 import React from 'react';
 import { PageView } from '../types';
+import { getRouteByView } from '../routes';
 
 interface FooterProps {
   onNavigate: (page: PageView) => void;
@@ -7,6 +8,11 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const currentYear = new Date().getFullYear();
+  
+  const handleLinkClick = (page: PageView, e: React.MouseEvent) => {
+    e.preventDefault();
+    onNavigate(page);
+  };
 
   return (
     <footer className="bg-slate-900 text-slate-300 py-16 mt-auto print:hidden border-t border-slate-800">
@@ -31,10 +37,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
            <div>
              <h3 className="text-white font-bold text-sm mb-6 uppercase tracking-widest border-b border-slate-800 pb-2 inline-block">Contratos Populares</h3>
              <ul className="text-sm space-y-3">
-               <li><button onClick={() => onNavigate('servico')} className="text-slate-300 hover:text-white transition-colors duration-200">Prestação de Serviços</button></li>
-               <li><button onClick={() => onNavigate('residencial')} className="text-slate-300 hover:text-white transition-colors duration-200">Aluguel Residencial</button></li>
-               <li><button onClick={() => onNavigate('comercial')} className="text-slate-300 hover:text-white transition-colors duration-200">Aluguel Comercial</button></li>
-               <li><button onClick={() => onNavigate('veiculo')} className="text-slate-300 hover:text-white transition-colors duration-200">Compra e Venda de Veículo</button></li>
+               <li><a href={getRouteByView('servico').path} onClick={(e) => handleLinkClick('servico', e)} className="text-slate-300 hover:text-white transition-colors duration-200 block">Prestação de Serviços</a></li>
+               <li><a href={getRouteByView('residencial').path} onClick={(e) => handleLinkClick('residencial', e)} className="text-slate-300 hover:text-white transition-colors duration-200 block">Aluguel Residencial</a></li>
+               <li><a href={getRouteByView('comercial').path} onClick={(e) => handleLinkClick('comercial', e)} className="text-slate-300 hover:text-white transition-colors duration-200 block">Aluguel Comercial</a></li>
+               <li><a href={getRouteByView('veiculo').path} onClick={(e) => handleLinkClick('veiculo', e)} className="text-slate-300 hover:text-white transition-colors duration-200 block">Compra e Venda de Veículo</a></li>
              </ul>
            </div>
 
@@ -42,11 +48,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
            <div>
              <h3 className="text-white font-bold text-sm mb-6 uppercase tracking-widest border-b border-slate-800 pb-2 inline-block">Institucional</h3>
              <ul className="text-sm space-y-3">
-               <li><button onClick={() => onNavigate('about')} className="text-slate-300 hover:text-white transition-colors duration-200">Quem Somos</button></li>
-               <li><button onClick={() => onNavigate('faq')} className="text-slate-300 hover:text-white transition-colors duration-200">Perguntas Frequentes (FAQ)</button></li>
-               <li><button onClick={() => onNavigate('privacy')} className="text-slate-300 hover:text-white transition-colors duration-200">Política de Privacidade</button></li>
-               <li><button onClick={() => onNavigate('terms')} className="text-slate-300 hover:text-white transition-colors duration-200">Termos de Uso</button></li>
-               <li><button onClick={() => onNavigate('cookies')} className="text-slate-300 hover:text-white transition-colors duration-200">Política de Cookies</button></li>
+               <li><a href={getRouteByView('about').path} onClick={(e) => handleLinkClick('about', e)} className="text-slate-300 hover:text-white transition-colors duration-200 block">Quem Somos</a></li>
+               <li><a href={getRouteByView('faq').path} onClick={(e) => handleLinkClick('faq', e)} className="text-slate-300 hover:text-white transition-colors duration-200 block">Perguntas Frequentes (FAQ)</a></li>
+               <li><a href={getRouteByView('privacy').path} onClick={(e) => handleLinkClick('privacy', e)} className="text-slate-300 hover:text-white transition-colors duration-200 block">Política de Privacidade</a></li>
+               <li><a href={getRouteByView('terms').path} onClick={(e) => handleLinkClick('terms', e)} className="text-slate-300 hover:text-white transition-colors duration-200 block">Termos de Uso</a></li>
+               <li><a href={getRouteByView('cookies').path} onClick={(e) => handleLinkClick('cookies', e)} className="text-slate-300 hover:text-white transition-colors duration-200 block">Política de Cookies</a></li>
              </ul>
            </div>
 

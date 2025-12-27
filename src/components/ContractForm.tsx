@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { ContractData, PageView } from '../types';
 import { trackEvent } from '../utils/analytics';
+import { getRouteByView } from '../routes';
 
 interface ContractFormProps {
   data: ContractData;
@@ -369,7 +370,7 @@ export const ContractForm: React.FC<ContractFormProps> = ({ data, onChange, onPr
           <span className="text-sm text-gray-700 font-medium group-hover:text-gray-900 transition-colors">
             Declaro que as informações acima são verdadeiras e li os{' '}
             <a 
-              href="#" 
+              href={getRouteByView('terms').path}
               onClick={(e) => { e.preventDefault(); onNavigate('terms'); }} 
               className="text-blue-600 underline hover:text-blue-800 font-bold"
             >

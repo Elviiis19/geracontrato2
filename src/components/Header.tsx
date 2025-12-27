@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { PageView } from '../types';
+import { getRouteByView } from '../routes';
 
 interface HeaderProps {
   onNavigate: (page: PageView) => void;
@@ -24,7 +25,8 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
     };
   }, []);
 
-  const handleNavClick = (page: PageView) => {
+  const handleNavClick = (page: PageView, e: React.MouseEvent) => {
+    e.preventDefault();
     onNavigate(page);
     setIsMenuOpen(false);
     setActiveDropdown(null);
@@ -106,9 +108,10 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
           {/* Logo & Navigation Container (Left Aligned) */}
           <div className="flex items-center">
             {/* Logo Section */}
-            <button 
+            <a 
+              href="/"
               className="flex-shrink-0 flex items-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg p-1 group" 
-              onClick={() => handleNavClick('home')}
+              onClick={(e) => handleNavClick('home', e)}
               aria-label="Ir para a página inicial do Gera Contrato"
             >
               <div className="bg-blue-600 p-2 rounded-lg mr-3 shadow-md group-hover:bg-blue-700 transition-colors">
@@ -120,7 +123,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                 <h1 className="text-xl font-bold text-gray-900 tracking-tight group-hover:text-blue-700 transition-colors">Gera Contrato</h1>
                 <p className="text-[10px] uppercase tracking-wider text-blue-700 font-bold group-hover:text-blue-900 transition-colors">Documentos Jurídicos Grátis</p>
               </div>
-            </button>
+            </a>
 
             {/* Desktop Navigation (Moved next to logo) */}
             <nav className="hidden xl:flex space-x-2 items-center h-full ml-10 border-l border-gray-200 pl-6" ref={navRef} aria-label="Navegação Principal">
@@ -149,14 +152,15 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                     <div className="absolute left-0 top-full mt-0 w-64 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5 animate-fade-in z-50 overflow-hidden border border-gray-100" role="menu">
                        <div className="py-2">
                         {category.items.map((item, index) => (
-                          <button 
+                          <a 
                             key={index}
-                            onClick={() => handleNavClick(item.page)} 
+                            href={getRouteByView(item.page).path}
+                            onClick={(e) => handleNavClick(item.page, e)} 
                             className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-l-4 border-transparent hover:border-blue-500" 
                             role="menuitem"
                           >
                             {item.label}
-                          </button>
+                          </a>
                         ))}
                       </div>
                     </div>
@@ -220,7 +224,13 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
       {isMenuOpen && (
         <div id="mobile-menu" className="xl:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg h-screen overflow-y-auto pb-32 z-50 animate-fade-in">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <button onClick={() => handleNavClick('home')} className="block w-full text-left px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 border-b border-gray-50">Home</button>
+            <a 
+              href="/"
+              onClick={(e) => handleNavClick('home', e)} 
+              className="block w-full text-left px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 border-b border-gray-50"
+            >
+              Home
+            </a>
             
             {navCategories.map((category) => (
               <div key={category.id} className="border-b border-gray-50 last:border-0">
@@ -230,13 +240,14 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                 </div>
                 <div className="py-1">
                   {category.items.map((item, idx) => (
-                    <button 
+                    <a 
                       key={idx}
-                      onClick={() => handleNavClick(item.page)} 
+                      href={getRouteByView(item.page).path}
+                      onClick={(e) => handleNavClick(item.page, e)} 
                       className="block w-full text-left px-4 py-3 text-base font-medium text-gray-800 hover:text-blue-600 hover:bg-gray-50 pl-10 border-l-2 border-transparent hover:border-blue-500 transition-colors"
                     >
                       {item.label}
-                    </button>
+                    </a>
                   ))}
                 </div>
               </div>
@@ -249,9 +260,9 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
             </div>
             
              <div className="px-3 py-3 border-t border-gray-100 mt-2">
-              <button onClick={() => handleNavClick('about')} className="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-50 rounded-md">Quem Somos</button>
-              <button onClick={() => handleNavClick('faq')} className="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-50 rounded-md">FAQ</button>
-              <button onClick={() => handleNavClick('privacy')} className="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-50 rounded-md">Privacidade</button>
+              <a href="/quem-somos" onClick={(e) => handleNavClick('about', e)} className="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-50 rounded-md">Quem Somos</a>
+              <a href="/perguntas-frequentes" onClick={(e) => handleNavClick('faq', e)} className="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-50 rounded-md">FAQ</a>
+              <a href="/politica-de-privacidade" onClick={(e) => handleNavClick('privacy', e)} className="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-50 rounded-md">Privacidade</a>
             </div>
           </div>
         </div>
