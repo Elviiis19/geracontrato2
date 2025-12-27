@@ -8,6 +8,8 @@
     <meta name="author" content="Elvis Dias" />
     <meta name="keywords" content="gerar contrato online, contrato pdf grátis, contrato de aluguel, contrato prestação serviços, contrato rural, arrendamento rural, parceria agrícola, contrato união estável" />
     <meta name="theme-color" content="#0f172a" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://geracontrato.com.br/" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -16,13 +18,12 @@
     <meta property="og:description" content="Crie contratos profissionais de prestação de serviços, aluguel e venda de veículos gratuitamente. Baseado na lei brasileira." />
     
     <!-- Fonts: Preconnect and Preload for Performance (LCP) -->
-    <!-- Added display=swap to avoid FOIT (Flash of Invisible Text) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Tailwind Config - Loaded BEFORE script to ensure config is ready -->
+    <!-- Tailwind Config -->
     <script>
       tailwind = {
         config: {
@@ -58,8 +59,18 @@
         }
       }
     </script>
-    <!-- Tailwind CSS with defer -->
-    <script src="https://cdn.tailwindcss.com" defer></script>
+    <!-- Tailwind CSS (No defer to prevent FOUC/Visual Glitches) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google tag (gtag.js) - Standard Async for Search Console Validation -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B2ZW0Q67E4"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-B2ZW0Q67E4');
+    </script>
 
     <!-- Schema Markup (JSON-LD) -->
     <script type="application/ld+json">
@@ -99,20 +110,20 @@
         @page { margin: 0; size: auto; }
         body { -webkit-print-color-adjust: exact; }
       }
-      /* Smooth scrolling for anchor links */
+      /* Smooth scrolling */
       html { scroll-behavior: smooth; }
       
-      /* Accessibility: Focus styles */
+      /* Accessibility focus */
       :focus-visible {
         outline: 2px solid #2563eb;
         outline-offset: 2px;
       }
-      /* Critical CSS to prevent white flash before Tailwind loads */
+      /* Critical CSS to match visual design immediately */
       body {
         background-color: #f8fafc; /* slate-50 */
         color: #0f172a; /* slate-900 */
         margin: 0;
-        font-family: sans-serif; /* System font fallback until Inter loads */
+        font-family: sans-serif;
       }
     </style>
 <script type="importmap">
