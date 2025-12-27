@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://geracontrato.com.br/sitemap.xml
