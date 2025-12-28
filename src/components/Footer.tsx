@@ -39,4 +39,42 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
              <ul className="text-sm space-y-2">
                <li><a href={getRouteByView('servico').path} onClick={(e) => handleLinkClick('servico', e)} className="hover:text-blue-400 transition-colors block">Prestação de Serviços</a></li>
                <li><a href={getRouteByView('residencial').path} onClick={(e) => handleLinkClick('residencial', e)} className="hover:text-blue-400 transition-colors block">Aluguel Residencial</a></li>
-               <li><a href={getRouteByView('comercial').path} onClick={(e) => handleLinkClick('comercial', e)} className="hover:text-blue-400 transition-
+               <li><a href={getRouteByView('comercial').path} onClick={(e) => handleLinkClick('comercial', e)} className="hover:text-blue-400 transition-colors block">Aluguel Comercial</a></li>
+               <li><a href={getRouteByView('veiculo').path} onClick={(e) => handleLinkClick('veiculo', e)} className="hover:text-blue-400 transition-colors block">Compra e Venda de Veículo</a></li>
+             </ul>
+           </div>
+
+           {/* Column 3: Institutional */}
+           <div>
+             <h4 className="text-white font-bold text-base mb-4 uppercase tracking-wider text-xs">Institucional</h4>
+             <ul className="text-sm space-y-2">
+               <li><a href={getRouteByView('about').path} onClick={(e) => handleLinkClick('about', e)} className="hover:text-blue-400 transition-colors block">Quem Somos</a></li>
+               <li><a href={getRouteByView('faq').path} onClick={(e) => handleLinkClick('faq', e)} className="hover:text-blue-400 transition-colors block">Perguntas Frequentes (FAQ)</a></li>
+               <li><a href={getRouteByView('privacy').path} onClick={(e) => handleLinkClick('privacy', e)} className="hover:text-blue-400 transition-colors block">Política de Privacidade</a></li>
+               <li><a href={getRouteByView('terms').path} onClick={(e) => handleLinkClick('terms', e)} className="hover:text-blue-400 transition-colors block">Termos de Uso</a></li>
+               <li><a href={getRouteByView('cookies').path} onClick={(e) => handleLinkClick('cookies', e)} className="hover:text-blue-400 transition-colors block">Política de Cookies</a></li>
+             </ul>
+           </div>
+
+           {/* Column 4: Partners */}
+           <div>
+             <h4 className="text-white font-bold text-base mb-4 uppercase tracking-wider text-xs">Ferramentas Úteis</h4>
+             <ul className="text-sm space-y-2">
+               <li><a href="https://recibogratis.com.br" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors flex items-center justify-center md:justify-start">Recibo Grátis <span className="text-[10px] ml-1">↗</span></a></li>
+               <li><a href="https://declaracaoonline.com.br" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors flex items-center justify-center md:justify-start">Declaração Online <span className="text-[10px] ml-1">↗</span></a></li>
+             </ul>
+           </div>
+        </div>
+        
+        <div className="border-t border-gray-700 pt-6 text-center">
+          <p className="mb-2 text-sm text-gray-500">
+            &copy; {currentYear} Gera Contrato. Todos os direitos reservados.
+          </p>
+          <p className="text-xs text-gray-600">
+            Desenvolvido por Elvis Dias
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+};
