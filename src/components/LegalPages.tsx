@@ -59,39 +59,106 @@ export const CookiePolicy: React.FC = () => (
 );
 
 export const AboutUs: React.FC = () => (
-  <div className="max-w-4xl mx-auto px-4 py-12 animate-fade-in">
-    <h1 className="text-3xl font-bold text-navy-900 mb-6">Quem Somos</h1>
-    <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col md:flex-row items-center gap-8">
-      <div className="w-full md:w-2/3">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Facilitando a Burocracia no Brasil</h2>
-        <p className="text-gray-600 mb-4 leading-relaxed">
-          O <strong>Gera Contrato</strong> nasceu da necessidade de simplificar o acesso a documentos jurídicos básicos no Brasil. Acreditamos que formalizar um acordo de serviço ou aluguel não deve ser um processo caro ou demorado.
-        </p>
-        <p className="text-gray-600 mb-4 leading-relaxed">
-          Nossa missão é fornecer ferramentas tecnológicas gratuitas, rápidas e seguras para autônomos, pequenos empresários e cidadãos comuns.
-        </p>
-        <div className="mt-6 border-t pt-6">
-          <p className="font-semibold text-gray-900">Desenvolvido por Elvis Dias</p>
-          <p className="text-sm text-gray-500">Especialista em Desenvolvimento Web e Soluções Digitais.</p>
+  <div className="max-w-5xl mx-auto px-4 py-16 animate-fade-in">
+    {/* Header Section */}
+    <div className="text-center mb-16">
+      <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight leading-tight">
+        Nossa Missão é <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Desburocratizar o Brasil</span>
+      </h1>
+      <p className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+        Acreditamos que o acesso a documentos jurídicos básicos deve ser um direito acessível a todos, não um privilégio de quem pode pagar caro ou esperar dias por um papel.
+      </p>
+    </div>
+
+    {/* The Story / Founder Section */}
+    <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden mb-16">
+      <div className="md:flex">
+        <div className="md:w-1/3 bg-slate-900 p-8 flex flex-col justify-center items-center text-center relative overflow-hidden">
+           {/* Decorative bg elements */}
+           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-600 to-slate-900 opacity-90 z-0"></div>
+           <div className="relative z-10">
+             <div className="w-32 h-32 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white text-4xl font-bold border-4 border-white/20 mb-6 mx-auto shadow-lg">
+               ED
+             </div>
+             <h3 className="text-2xl font-bold text-white">Elvis Dias</h3>
+             <p className="text-blue-200 font-medium mt-1 uppercase tracking-wider text-xs">Fundador & Desenvolvedor Full Stack</p>
+             <div className="mt-8 border-t border-white/20 pt-6">
+                <p className="text-white/80 text-sm italic">"Tecnologia deve servir para facilitar a vida real."</p>
+             </div>
+           </div>
         </div>
-      </div>
-      <div className="w-full md:w-1/3 flex justify-center">
-        <div className="w-40 h-40 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-4xl font-bold shadow-lg">
-          GC
+        <div className="md:w-2/3 p-8 md:p-12">
+          <h3 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+            <span className="w-8 h-1 bg-blue-600 rounded-full inline-block"></span>
+            A História por trás do Projeto
+          </h3>
+          <div className="prose text-slate-600 leading-relaxed space-y-5 text-lg">
+            <p>
+              "Como desenvolvedor Full Stack, sempre olhei para o mundo buscando problemas que a tecnologia pudesse resolver de forma elegante. Mas a ideia do <strong>Gera Contrato</strong> surgiu de uma frustração pessoal, que talvez você compartilhe."
+            </p>
+            <p>
+              "Certa vez, precisei de um contrato de aluguel simples e urgente. Minhas opções eram frustrantes: baixar modelos em Word desformatados e cheios de erros legais antigos, ou pagar taxas abusivas em sites que prometiam 'facilidade' mas cobravam caro por um PDF automático. Pensei: <em>'Por que algo tão essencial é tão difícil?'</em>"
+            </p>
+            <p>
+              "Decidi usar minha experiência em programação para criar a solução que eu gostaria de ter encontrado: uma ferramenta <strong>gratuita, rápida e segura</strong>. Desenvolvi o Gera Contrato para que ninguém mais precise perder tempo formatando cláusulas ou gastar dinheiro com burocracia desnecessária. Aqui, a tecnologia trabalha a favor do cidadão."
+            </p>
+          </div>
         </div>
       </div>
     </div>
+
+    {/* Values Grid */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+      <div className="bg-blue-50 rounded-2xl p-8 border border-blue-100 transition-all hover:-translate-y-1 hover:shadow-lg">
+        <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white mb-6 shadow-md shadow-blue-200">
+          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+        </div>
+        <h3 className="text-xl font-bold text-slate-900 mb-3">Velocidade Extrema</h3>
+        <p className="text-slate-600 leading-relaxed">Eliminamos etapas manuais. O que levaria horas formatando e revisando no Word, aqui nosso algoritmo faz em segundos.</p>
+      </div>
+      <div className="bg-emerald-50 rounded-2xl p-8 border border-emerald-100 transition-all hover:-translate-y-1 hover:shadow-lg">
+         <div className="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center text-white mb-6 shadow-md shadow-emerald-200">
+          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        </div>
+        <h3 className="text-xl font-bold text-slate-900 mb-3">Gratuidade Real</h3>
+        <p className="text-slate-600 leading-relaxed">Sem pegadinhas, sem "teste grátis" que pede cartão de crédito no final. Mantemos o projeto acessível através de tecnologia eficiente.</p>
+      </div>
+      <div className="bg-indigo-50 rounded-2xl p-8 border border-indigo-100 transition-all hover:-translate-y-1 hover:shadow-lg">
+         <div className="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center text-white mb-6 shadow-md shadow-indigo-200">
+          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+        </div>
+        <h3 className="text-xl font-bold text-slate-900 mb-3">Privacidade Absoluta</h3>
+        <p className="text-slate-600 leading-relaxed">Seus dados não são nossos. Toda a mágica acontece no navegador do seu dispositivo, garantindo sigilo total das informações.</p>
+      </div>
+    </div>
     
-    <div className="mt-12 text-center">
-      <h3 className="text-xl font-bold text-gray-900 mb-6">Conheça nossas outras ferramentas</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-        <a href="https://recibogratis.com.br" target="_blank" rel="noopener noreferrer" className="block p-6 bg-white border border-gray-200 rounded-xl hover:shadow-md hover:border-blue-300 transition-all">
-          <span className="text-blue-600 font-bold text-lg block mb-2">Recibo Grátis</span>
-          <span className="text-gray-500 text-sm">Gere recibos de pagamento simples e profissionais em PDF.</span>
+    {/* Ecosystem Links */}
+    <div className="text-center border-t border-slate-200 pt-16">
+      <span className="text-blue-600 font-bold text-xs uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full mb-4 inline-block">Ecossistema</span>
+      <h3 className="text-3xl font-bold text-slate-900 mb-6">Outras Soluções que Desenvolvi</h3>
+      <p className="text-slate-600 mb-10 max-w-2xl mx-auto">
+        O Gera Contrato faz parte de um conjunto de ferramentas criadas com o mesmo propósito: simplificar a vida do brasileiro.
+      </p>
+      <div className="flex flex-col sm:flex-row justify-center gap-6 max-w-4xl mx-auto">
+        <a href="https://recibogratis.com.br" target="_blank" rel="noopener noreferrer" className="flex-1 p-8 bg-white border border-slate-200 rounded-2xl hover:shadow-xl hover:border-blue-400 transition-all group text-left">
+          <div className="flex items-center justify-between mb-4">
+            <div className="p-3 bg-blue-50 rounded-lg text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+            </div>
+            <span className="text-slate-300 group-hover:text-blue-600 transition-colors">↗</span>
+          </div>
+          <h4 className="text-xl font-bold text-slate-900 mb-2">Recibo Grátis</h4>
+          <p className="text-slate-500 text-sm leading-relaxed">Gerador de recibos de pagamento profissionais em PDF. Ideal para aluguéis e serviços avulsos.</p>
         </a>
-        <a href="https://declaracaoonline.com.br" target="_blank" rel="noopener noreferrer" className="block p-6 bg-white border border-gray-200 rounded-xl hover:shadow-md hover:border-blue-300 transition-all">
-          <span className="text-blue-600 font-bold text-lg block mb-2">Declaração Online</span>
-          <span className="text-gray-500 text-sm">Crie declarações de residência, trabalho e renda facilmente.</span>
+        <a href="https://declaracaoonline.com.br" target="_blank" rel="noopener noreferrer" className="flex-1 p-8 bg-white border border-slate-200 rounded-2xl hover:shadow-xl hover:border-blue-400 transition-all group text-left">
+           <div className="flex items-center justify-between mb-4">
+            <div className="p-3 bg-blue-50 rounded-lg text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+            </div>
+            <span className="text-slate-300 group-hover:text-blue-600 transition-colors">↗</span>
+          </div>
+          <h4 className="text-xl font-bold text-slate-900 mb-2">Declaração Online</h4>
+          <p className="text-slate-500 text-sm leading-relaxed">Crie declarações de residência, trabalho e renda formatadas corretamente, sem precisar de Word.</p>
         </a>
       </div>
     </div>
