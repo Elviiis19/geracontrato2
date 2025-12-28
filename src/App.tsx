@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect, Suspense } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Header } from './components/Header';
 // Lazy load Footer to reduce initial bundle size (TBT optimization)
 const Footer = React.lazy(() => import('./components/Footer').then(module => ({ default: module.Footer })));
@@ -6,7 +7,7 @@ const Footer = React.lazy(() => import('./components/Footer').then(module => ({ 
 import { HomePage } from './components/HomePage';
 import { ContractData, initialPartyState, initialServiceState, initialImovelState, initialVehicleState, PageView, ContractType } from './types';
 import { trackPageView } from './utils/analytics';
-import { getRouteByPath, getRouteByView, RouteConfig } from './routes';
+import { getRouteByPath, getRouteByView } from './routes';
 
 // Lazy load heavy components to reduce initial bundle size (Performance 100%)
 const ContractForm = React.lazy(() => import('./components/ContractForm').then(module => ({ default: module.ContractForm })));
@@ -64,95 +65,9 @@ const App: React.FC = () => {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // SEO & Analytics Side Effects
+  // Track Page View on change
   useEffect(() => {
-    const activeRoute = getRouteByView(currentPage);
-    const canonicalUrl = `https://geracontrato.com.br${activeRoute.path === '/' ? '' : activeRoute.path}`;
-
-    // 1. Update Document Title
-    document.title = activeRoute.title;
-
-    // 2. Update Meta Description
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', activeRoute.description);
-    }
-
-    // 3. Update Canonical URL
-    let linkCanonical = document.querySelector('link[rel="canonical"]');
-    if (linkCanonical) {
-      linkCanonical.setAttribute('href', canonicalUrl);
-    }
-
-    // 4. Update Open Graph Tags (Facebook/WhatsApp)
-    const updateMeta = (property: string, content: string) => {
-      let meta = document.querySelector(`meta[property="${property}"]`);
-      if (!meta) {
-        meta = document.createElement('meta');
-        meta.setAttribute('property', property);
-        document.head.appendChild(meta);
-      }
-      meta.setAttribute('content', content);
-    };
-
-    updateMeta('og:title', activeRoute.title);
-    updateMeta('og:description', activeRoute.description);
-    updateMeta('og:url', canonicalUrl);
-
-    // 5. Inject JSON-LD (Rich Snippets)
-    const updateJsonLd = (route: RouteConfig) => {
-      let script = document.querySelector('#dynamic-json-ld');
-      if (!script) {
-        script = document.createElement('script');
-        script.id = 'dynamic-json-ld';
-        script.setAttribute('type', 'application/ld+json');
-        document.head.appendChild(script);
-      }
-
-      // Default WebApplication Schema
-      const baseSchema = {
-        "@context": "https://schema.org",
-        "@type": route.schemaType || "WebApplication",
-        "name": route.title,
-        "url": canonicalUrl,
-        "description": route.description,
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web Browser",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "BRL"
-        }
-      };
-
-      // Add Breadcrumbs Schema
-      const breadcrumbSchema = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://geracontrato.com.br"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": route.view === 'home' ? 'Início' : (route.seoContent?.title || route.title),
-            "item": canonicalUrl
-          }
-        ]
-      };
-      
-      script.textContent = JSON.stringify([baseSchema, breadcrumbSchema]);
-    };
-
-    updateJsonLd(activeRoute);
-
-    // 6. Track Page View
     trackPageView(currentPage);
-
   }, [currentPage]);
 
   const handleDataChange = useCallback((newData: ContractData) => {
@@ -249,8 +164,63 @@ const App: React.FC = () => {
     );
   };
 
+  // Get current SEO data
+  const activeRoute = getRouteByView(currentPage);
+  const canonicalUrl = `https://geracontrato.com.br${activeRoute.path === '/' ? '' : activeRoute.path}`;
+
+  // Prepare Schema.org JSON-LD
+  const baseSchema = {
+    "@context": "https://schema.org",
+    "@type": activeRoute.schemaType || "WebApplication",
+    "name": activeRoute.title,
+    "url": canonicalUrl,
+    "description": activeRoute.description,
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "BRL"
+    }
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://geracontrato.com.br"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": activeRoute.view === 'home' ? 'Início' : activeRoute.title.split('|')[0].trim(),
+        "item": canonicalUrl
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen flex flex-col font-sans bg-slate-50 text-slate-900">
+      <Helmet>
+        {/* Basic Meta Tags */}
+        <title>{activeRoute.title}</title>
+        <meta name="description" content={activeRoute.description} />
+        <link rel="canonical" href={canonicalUrl} />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content={activeRoute.title} />
+        <meta property="og:description" content={activeRoute.description} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:type" content="website" />
+
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">{JSON.stringify([baseSchema, breadcrumbSchema])}</script>
+      </Helmet>
+
       <Header onNavigate={handleNavigation} />
       <main className="flex-grow flex flex-col items-center w-full">
         {renderContent()}

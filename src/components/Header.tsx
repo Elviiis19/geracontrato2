@@ -101,7 +101,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
   ];
 
   return (
-    <header className="bg-white/95 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 shadow-sm print:hidden font-sans">
+    <header className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm print:hidden font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           
@@ -110,23 +110,23 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
             {/* Logo Section */}
             <a 
               href="/"
-              className="flex-shrink-0 flex items-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg p-1 group" 
-              onClick={(e) => handleNavClick('home', e)}
-              aria-label="Ir para a página inicial do Gera Contrato"
+              onClick={(e) => handleNavClick('home', e)} 
+              className="flex-shrink-0 flex items-center cursor-pointer group no-underline"
+              aria-label="Ir para a página inicial"
             >
-              <div className="bg-blue-600 p-2 rounded-lg mr-3 shadow-md group-hover:bg-blue-700 transition-colors">
+              <div className="bg-blue-600 p-2 rounded-lg mr-3 shadow-sm group-hover:bg-blue-700 transition-colors">
                 <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <div className="text-left">
+              <div>
                 <h1 className="text-xl font-bold text-gray-900 tracking-tight group-hover:text-blue-700 transition-colors">Gera Contrato</h1>
-                <p className="text-[10px] uppercase tracking-wider text-blue-700 font-bold group-hover:text-blue-900 transition-colors">Documentos Jurídicos Grátis</p>
+                <p className="text-[10px] uppercase tracking-wider text-blue-600 font-semibold">Documentos Jurídicos Grátis</p>
               </div>
             </a>
 
             {/* Desktop Navigation (Moved next to logo) */}
-            <nav className="hidden xl:flex space-x-2 items-center h-full ml-10 border-l border-gray-200 pl-6" ref={navRef} aria-label="Navegação Principal">
+            <nav className="hidden xl:flex space-x-2 items-center h-full ml-10 border-l border-gray-100 pl-6" ref={navRef}>
               {navCategories.map((category) => (
                 <div 
                   key={category.id}
@@ -136,8 +136,8 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
                 >
                   <button 
                     onClick={() => toggleDropdown(category.id)} 
-                    className={`flex items-center font-medium transition-all text-sm focus:outline-none px-3 py-2 rounded-md border border-transparent
-                      ${activeDropdown === category.id ? 'text-blue-700 bg-blue-50 border-blue-100' : 'text-gray-600 hover:text-blue-700 hover:bg-gray-50'}
+                    className={`flex items-center font-medium transition-all text-sm focus:outline-none px-3 py-2 rounded-md
+                      ${activeDropdown === category.id ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50'}
                     `}
                     aria-haspopup="true"
                     aria-expanded={activeDropdown === category.id}
@@ -176,11 +176,11 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
               >
                 <button 
                   onClick={() => toggleDropdown('tools')} 
-                  className="flex items-center text-gray-600 hover:text-blue-700 font-medium transition-colors text-sm focus:outline-none px-3 py-2 rounded-md hover:bg-gray-50"
+                  className="flex items-center text-gray-600 hover:text-blue-600 font-medium transition-colors text-sm focus:outline-none px-3 py-2 rounded-md hover:bg-gray-50"
                   aria-haspopup="true"
                   aria-expanded={activeDropdown === 'tools'}
                 >
-                  <svg className="w-5 h-5 mr-1.5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                  <svg className="w-5 h-5 mr-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                   Ferramentas <svg className={`w-3 h-3 ml-1 transform transition-transform ${activeDropdown === 'tools' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
                 </button>
                 {activeDropdown === 'tools' && (
@@ -201,13 +201,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
 
           {/* Mobile Menu Button (Right Aligned) */}
           <div className="xl:hidden flex items-center">
-            <button 
-              onClick={() => setIsMenuOpen(!isMenuOpen)} 
-              className="text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 p-2 rounded-md hover:bg-gray-100"
-              aria-label="Alternar menu de navegação"
-              aria-expanded={isMenuOpen}
-              aria-controls="mobile-menu"
-            >
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-500 hover:text-gray-700 focus:outline-none p-2 rounded-md hover:bg-gray-100">
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {isMenuOpen ? (
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -222,21 +216,15 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
 
       {/* Mobile Menu Dropdown */}
       {isMenuOpen && (
-        <div id="mobile-menu" className="xl:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg h-screen overflow-y-auto pb-32 z-50 animate-fade-in">
+        <div className="xl:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg h-screen overflow-y-auto pb-32 z-50">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <a 
-              href="/"
-              onClick={(e) => handleNavClick('home', e)} 
-              className="block w-full text-left px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 border-b border-gray-50"
-            >
-              Home
-            </a>
+            <a href="/" onClick={(e) => handleNavClick('home', e)} className="block w-full text-left px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 border-b border-gray-50">Home</a>
             
             {navCategories.map((category) => (
               <div key={category.id} className="border-b border-gray-50 last:border-0">
                 <div className="px-3 py-3 bg-gray-50/50 flex items-center">
                   <span className="mr-2 opacity-80">{category.icon}</span>
-                  <span className="block text-xs font-bold text-gray-600 uppercase tracking-wider">{category.label}</span>
+                  <span className="block text-xs font-bold text-gray-500 uppercase tracking-wider">{category.label}</span>
                 </div>
                 <div className="py-1">
                   {category.items.map((item, idx) => (
@@ -254,15 +242,15 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
             ))}
             
             <div className="px-3 py-3 border-t border-gray-100">
-              <span className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 px-1">Ferramentas</span>
+              <span className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 px-1">Ferramentas</span>
               <a href="https://recibogratis.com.br" target="_blank" rel="noopener noreferrer" className="block py-2 px-4 text-base font-medium text-blue-600 hover:text-blue-800 bg-blue-50 rounded-md mb-2">Recibo Grátis ↗</a>
               <a href="https://declaracaoonline.com.br" target="_blank" rel="noopener noreferrer" className="block py-2 px-4 text-base font-medium text-blue-600 hover:text-blue-800 bg-blue-50 rounded-md">Declaração Online ↗</a>
             </div>
             
              <div className="px-3 py-3 border-t border-gray-100 mt-2">
-              <a href="/quem-somos" onClick={(e) => handleNavClick('about', e)} className="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-50 rounded-md">Quem Somos</a>
-              <a href="/perguntas-frequentes" onClick={(e) => handleNavClick('faq', e)} className="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-50 rounded-md">FAQ</a>
-              <a href="/politica-de-privacidade" onClick={(e) => handleNavClick('privacy', e)} className="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-50 rounded-md">Privacidade</a>
+              <a href="/quem-somos" onClick={(e) => handleNavClick('about', e)} className="block w-full text-left py-2 px-4 text-sm text-gray-600 hover:bg-gray-50 rounded-md">Quem Somos</a>
+              <a href="/perguntas-frequentes" onClick={(e) => handleNavClick('faq', e)} className="block w-full text-left py-2 px-4 text-sm text-gray-600 hover:bg-gray-50 rounded-md">FAQ</a>
+              <a href="/politica-de-privacidade" onClick={(e) => handleNavClick('privacy', e)} className="block w-full text-left py-2 px-4 text-sm text-gray-600 hover:bg-gray-50 rounded-md">Privacidade</a>
             </div>
           </div>
         </div>
