@@ -172,20 +172,52 @@ const App: React.FC = () => {
   const canonicalUrl = `https://geracontrato.com.br${activeRoute.path === '/' ? '' : activeRoute.path}`;
 
   // Prepare Schema.org JSON-LD
-  const baseSchema = {
+  // Fix for Merchant Listings errors: Added availability, itemCondition, sku, brand, and a placeholder image.
+  let schemaData: any = {
     "@context": "https://schema.org",
     "@type": activeRoute.schemaType || "WebApplication",
-    "name": activeRoute.title,
+    "name": activeRoute.title.split('|')[0].trim(),
     "url": canonicalUrl,
     "description": activeRoute.description,
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web Browser",
-    "offers": {
+  };
+
+  // Enhanced Schema for Product pages (Contracts) to fix GSC errors
+  if (activeRoute.schemaType === 'Product') {
+    schemaData = {
+      ...schemaData,
+      "image": [
+        "https://geracontrato.com.br/social-share.png" // Mandatory for Merchant listings
+      ],
+      "brand": {
+        "@type": "Brand",
+        "name": "Gera Contrato"
+      },
+      "sku": `GC-${activeRoute.view.toUpperCase()}`,
+      "mpn": `GC-${activeRoute.view.toUpperCase()}`,
+      "offers": {
+        "@type": "Offer",
+        "url": canonicalUrl,
+        "price": "0.00",
+        "priceCurrency": "BRL",
+        "priceValidUntil": "2026-12-31", // Required to prevent 'missing price' warnings in future
+        "availability": "https://schema.org/InStock", // Fixes "Missing field: availability"
+        "itemCondition": "https://schema.org/NewCondition", // Fixes "Missing field: itemCondition"
+        "seller": {
+          "@type": "Organization",
+          "name": "Gera Contrato"
+        }
+      }
+    };
+  } else {
+    // Basic offer for WebApplication/Service
+    schemaData.offers = {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "BRL"
-    }
-  };
+    };
+  }
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -219,9 +251,10 @@ const App: React.FC = () => {
         <meta property="og:description" content={activeRoute.description} />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://geracontrato.com.br/social-share.png" />
 
         {/* Structured Data (JSON-LD) */}
-        <script type="application/ld+json">{JSON.stringify([baseSchema, breadcrumbSchema])}</script>
+        <script type="application/ld+json">{JSON.stringify([schemaData, breadcrumbSchema])}</script>
       </Helmet>
 
       <Header onNavigate={handleNavigation} />

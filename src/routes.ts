@@ -27,7 +27,7 @@ export const routes: RouteConfig[] = [
     view: 'servico',
     title: "Contrato de Prestação de Serviços PDF Grátis | Simples e Rápido",
     description: "Gerador de Contrato de Prestação de Serviços para autônomos e freelancers. Preencha e baixe o PDF pronto para imprimir. Válido juridicamente.",
-    schemaType: "Service",
+    schemaType: "Product",
     relatedLinks: ['recibo', 'comercial', 'veiculo'],
     seoContent: {
       title: "Guia Completo: Contrato de Prestação de Serviços",
