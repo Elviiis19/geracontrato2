@@ -19,6 +19,27 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     onNavigate(view);
   };
 
+  // FAQ Específico para a Home (Foco em Usabilidade/Ferramenta)
+  // Isso ajuda a rankear para termos como "como funciona gerador de contrato"
+  const toolFaqs = [
+    {
+      q: "Preciso instalar algum programa ou aplicativo?",
+      a: "Não. O Gera Contrato é uma ferramenta 100% baseada na web. Você cria, edita e baixa seu documento diretamente pelo navegador do seu celular (Android/iOS) ou computador, sem ocupar espaço na memória."
+    },
+    {
+      q: "O arquivo sai em Word (.doc) ou PDF?",
+      a: "Geramos o documento final exclusivamente em PDF de alta resolução. Isso garante que a formatação jurídica (margens, cláusulas e espaçamentos) permaneça intacta na impressão, evitando a desconfiguração comum em arquivos de Word."
+    },
+    {
+      q: "É compatível com assinatura digital (Gov.br)?",
+      a: "Sim. O PDF gerado é desbloqueado e segue os padrões Padrão Brasileiro de Assinatura Digital. Você pode subir o arquivo no portal Gov.br, Docusign, ClickSign ou ZapSign para assinar eletronicamente com validade jurídica."
+    },
+    {
+      q: "Existe algum limite de contratos que posso criar?",
+      a: "Não há limites. A ferramenta é gratuita e ilimitada. Você pode gerar quantos contratos de aluguel, serviço ou venda precisar, para diferentes clientes ou situações."
+    }
+  ];
+
   return (
     <div className="flex flex-col items-center w-full">
       
@@ -241,31 +262,71 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* SEO Content Section */}
-      <section className="w-full bg-slate-50 py-16 border-t border-slate-200" aria-labelledby="seo-title">
+      {/* NEW: Tool-Specific FAQ Section (Targeting Long Tail "How To" Keywords) */}
+      <section className="w-full bg-slate-50 py-16 border-t border-slate-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 id="seo-title" className="text-2xl font-bold text-slate-900 mb-6">Por que usar um gerador de contratos online?</h2>
-          <div className="prose prose-slate prose-lg text-slate-600">
-            <p className="mb-4">
-              Em um mundo cada vez mais dinâmico, a necessidade de formalizar acordos de forma rápida e segura é essencial. O uso de um <strong>gerador de contratos online</strong> elimina a necessidade de redigir documentos do zero, economizando tempo e evitando erros jurídicos comuns.
-            </p>
-            <p className="mb-4">
-              Diferente de <strong>modelos de contrato em Word</strong> que podem estar desatualizados ou conter formatações quebradas, nossa ferramenta garante que a estrutura legal (cláusulas, foro, qualificações) esteja sempre alinhada com as leis brasileiras vigentes em 2026.
-            </p>
-            <h3 className="text-xl font-semibold text-slate-800 mt-6 mb-3">Validade Jurídica</h3>
-            <p className="mb-4">
-              Os documentos gerados pelo Gera Contrato possuem plena validade jurídica quando assinados pelas partes e por duas testemunhas, conforme o Art. 784 do Código de Processo Civil. Eles servem como título executivo extrajudicial, garantindo segurança para locadores, prestadores de serviço e vendedores.
-            </p>
+          <h2 className="text-2xl font-bold text-slate-900 mb-8 text-center">Dúvidas sobre a ferramenta</h2>
+          <div className="space-y-4">
+            {toolFaqs.map((faq, index) => (
+              <details key={index} className="group bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <summary className="flex items-center justify-between cursor-pointer p-5 list-none font-medium text-slate-800 hover:bg-slate-50 transition-colors">
+                  {faq.q}
+                  <span className="transition-transform duration-300 group-open:rotate-180 text-blue-600">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+                  </span>
+                </summary>
+                <div className="px-5 pb-5 text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                  {faq.a}
+                </div>
+              </details>
+            ))}
           </div>
-          <div className="bg-white p-6 rounded-xl border border-slate-200 mt-8 shadow-sm">
-            <h4 className="font-bold text-slate-900 mb-2 flex items-center gap-2">
-              <svg className="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              Dica de Ouro:
-            </h4>
-            <p className="text-sm text-slate-600 m-0">
-              Para maior segurança, recomenda-se reconhecer firma das assinaturas em cartório ou utilizar assinaturas digitais certificadas (ICP-Brasil ou Gov.br).
+        </div>
+      </section>
+
+      {/* SEO Content Section - Enhanced Semantic Structure */}
+      <section className="w-full bg-white py-16 border-t border-slate-200" aria-labelledby="seo-title">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <article className="prose prose-slate prose-lg max-w-none">
+            <h2 id="seo-title" className="text-3xl font-extrabold text-slate-900 mb-6">Gerador de Contratos Online vs. Modelo em Word: Qual usar em 2026?</h2>
+            
+            <p>
+              A busca por "modelo de contrato download word" ainda é comum, mas o uso de um <strong>gerador de contratos online</strong> tornou-se o padrão da indústria por motivos de segurança e agilidade. Enquanto um arquivo .doc baixado pode conter vírus, macros maliciosas ou cláusulas desatualizadas (revogadas por novas leis), nossa plataforma oferece um ambiente seguro e sempre atualizado.
             </p>
-          </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-8 not-prose">
+              <div className="bg-red-50 p-6 rounded-xl border border-red-100">
+                <h3 className="font-bold text-red-800 flex items-center mb-3">
+                  <span className="text-xl mr-2">⚠️</span> Riscos de Modelos em Word
+                </h3>
+                <ul className="text-sm text-red-700 space-y-2">
+                  <li>• Formatação quebra ao abrir no celular.</li>
+                  <li>• Risco de cláusulas nulas ou abusivas.</li>
+                  <li>• Vírus e malware em sites de download.</li>
+                  <li>• Necessidade de editor de texto pago.</li>
+                </ul>
+              </div>
+              <div className="bg-emerald-50 p-6 rounded-xl border border-emerald-100">
+                <h3 className="font-bold text-emerald-800 flex items-center mb-3">
+                  <span className="text-xl mr-2">✅</span> Vantagens do Gera Contrato
+                </h3>
+                <ul className="text-sm text-emerald-700 space-y-2">
+                  <li>• PDF blindado contra edição indevida.</li>
+                  <li>• Cláusulas revisadas (Lei do Inquilinato/CC).</li>
+                  <li>• Layout profissional pronto para cartório.</li>
+                  <li>• Funciona em qualquer navegador/celular.</li>
+                </ul>
+              </div>
+            </div>
+
+            <h3 className="text-2xl font-bold text-slate-900 mt-8 mb-4">Assinatura Digital e Validade Jurídica</h3>
+            <p>
+              Uma dúvida frequente é: <em>"Contrato gerado online tem valor legal?"</em>. A resposta é <strong>sim</strong>. O documento em PDF gerado aqui pode ser impresso para assinatura física (com reconhecimento de firma em cartório, se desejado) ou utilizado para <strong>assinatura eletrônica</strong>.
+            </p>
+            <p>
+              Recomendamos o uso do portal <strong>Gov.br</strong> (Assinatura Eletrônica Avançada) ou plataformas certificadas ICP-Brasil para garantir a autenticidade e integridade do documento digitalmente, conforme a Lei 14.063/2020.
+            </p>
+          </article>
         </div>
       </section>
 
