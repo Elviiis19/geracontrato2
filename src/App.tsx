@@ -17,6 +17,7 @@ const TermsOfUse = React.lazy(() => import('./components/LegalPages').then(modul
 const AboutUs = React.lazy(() => import('./components/LegalPages').then(module => ({ default: module.AboutUs })));
 const CookiePolicy = React.lazy(() => import('./components/LegalPages').then(module => ({ default: module.CookiePolicy })));
 const FAQ = React.lazy(() => import('./components/FAQ').then(module => ({ default: module.FAQ })));
+const ContactPage = React.lazy(() => import('./components/ContactPage').then(module => ({ default: module.ContactPage })));
 
 const LoadingSpinner = () => (
   <div className="w-full h-96 flex items-center justify-center">
@@ -156,6 +157,8 @@ const App: React.FC = () => {
               return <AboutUs />;
             case 'faq':
               return <FAQ />;
+            case 'contact':
+              return <ContactPage />;
             default:
               return <HomePage onNavigate={handleNavigation} />;
           }

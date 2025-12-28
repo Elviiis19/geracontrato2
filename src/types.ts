@@ -9,7 +9,7 @@ export type ContractType =
   | 'namoro' 
   | 'uniaoEstavel';
 
-export type PageView = 'home' | ContractType | 'privacy' | 'terms' | 'about' | 'cookies' | 'faq';
+export type PageView = 'home' | ContractType | 'privacy' | 'terms' | 'about' | 'cookies' | 'faq' | 'contact';
 
 export interface PartyDetails {
   nome: string;

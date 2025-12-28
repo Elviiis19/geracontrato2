@@ -71,6 +71,11 @@ const routes = [
     path: '/politica-de-cookies',
     title: "Política de Cookies | Gera Contrato",
     description: "Informações sobre o uso de cookies e tecnologias de rastreamento."
+  },
+  {
+    path: '/fale-conosco',
+    title: "Fale Conosco | Suporte Gera Contrato",
+    description: "Entre em contato com a equipe do Gera Contrato. Dúvidas técnicas, sugestões ou parcerias."
   }
 ];
 
