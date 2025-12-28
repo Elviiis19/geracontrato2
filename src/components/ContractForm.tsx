@@ -156,6 +156,11 @@ export const ContractForm: React.FC<ContractFormProps> = ({ data, onChange, onPr
     }
   };
 
+  const handleLinkClick = (e: React.MouseEvent, page: PageView) => {
+    e.preventDefault();
+    onNavigate(page);
+  };
+
   return (
     <>
       <form ref={formRef} onSubmit={(e) => e.preventDefault()} className="bg-white rounded-xl shadow-md p-6 sm:p-8 border border-gray-200">
@@ -418,19 +423,70 @@ export const ContractForm: React.FC<ContractFormProps> = ({ data, onChange, onPr
         </div>
       </form>
 
-      {/* SEO Content Section (Contextual Text for Robots and Humans) */}
+      {/* Deep SEO Content Section - Enhanced Semantic Structure */}
       {currentRoute.seoContent && (
-        <div className="mt-12 bg-white rounded-xl shadow-sm border border-gray-200 p-8 prose prose-blue max-w-none print:hidden">
-          <h2 className="text-2xl font-bold text-navy-900 mb-4">{currentRoute.seoContent.title}</h2>
-          <p className="text-slate-600 leading-relaxed text-lg">
-            {currentRoute.seoContent.text}
-          </p>
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
-             <p className="text-sm text-blue-800 font-medium m-0">
-               ✨ Dica: Preencha todos os campos com atenção. Ao finalizar, clique em "Imprimir" e salve como PDF para garantir a formatação correta.
-             </p>
+        <article className="mt-12 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden print:hidden">
+          <div className="bg-slate-50 border-b border-gray-100 p-8">
+            <h2 className="text-2xl font-bold text-slate-900 mb-2">{currentRoute.seoContent.title}</h2>
+            <p className="text-slate-600 leading-relaxed text-lg">
+              {currentRoute.seoContent.intro}
+            </p>
           </div>
-        </div>
+          
+          <div className="p-8 space-y-8">
+             {currentRoute.seoContent.contentBlocks && currentRoute.seoContent.contentBlocks.map((block, index) => (
+                <div key={index} className="prose prose-blue max-w-none">
+                   <h3 className="text-xl font-semibold text-slate-800 mb-3">{block.title}</h3>
+                   <p className="text-slate-600 leading-relaxed whitespace-pre-line">{block.content}</p>
+                </div>
+             ))}
+
+             <div className="mt-8 p-5 bg-blue-50 rounded-xl border border-blue-100 flex items-start">
+                <span className="text-2xl mr-4">💡</span>
+                <div>
+                  <h4 className="font-bold text-blue-900 text-sm uppercase tracking-wide mb-1">Dica de Especialista</h4>
+                  <p className="text-blue-800 text-sm leading-relaxed m-0">
+                    Sempre imprima 2 ou 3 vias do contrato. Todas as partes (e testemunhas) devem assinar todas as vias. Se possível, reconheça firma em cartório para garantir eficácia de título executivo.
+                  </p>
+                </div>
+             </div>
+          </div>
+        </article>
+      )}
+
+      {/* Internal Linking Strategy - Related Contracts */}
+      {currentRoute.relatedLinks && currentRoute.relatedLinks.length > 0 && (
+         <div className="mt-10 print:hidden">
+            <h3 className="text-lg font-bold text-slate-800 mb-4 px-2">Veja também:</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {currentRoute.relatedLinks.map(linkKey => {
+                 if (linkKey === 'recibo') {
+                       return (
+                         <a key={linkKey} href="https://recibogratis.com.br" target="_blank" rel="noopener noreferrer" className="block p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md hover:border-blue-400 transition-all group">
+                            <span className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1 block">Ferramenta</span>
+                            <span className="font-bold text-slate-800 group-hover:text-blue-700">Recibo Grátis ↗</span>
+                            <span className="text-xs text-slate-500 block mt-1">Gerar recibo de pagamento</span>
+                         </a>
+                       );
+                 }
+
+                 const linkRoute = getRouteByView(linkKey);
+                 if (!linkRoute) return null;
+
+                 return (
+                    <a 
+                      key={linkKey} 
+                      href={linkRoute.path} 
+                      onClick={(e) => handleLinkClick(e, linkKey)}
+                      className="block p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md hover:border-blue-400 transition-all group"
+                    >
+                       <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 block">Modelo Relacionado</span>
+                       <span className="font-bold text-slate-800 group-hover:text-blue-700">{linkRoute.title.split('|')[0]}</span>
+                    </a>
+                 )
+              })}
+            </div>
+         </div>
       )}
     </>
   );
