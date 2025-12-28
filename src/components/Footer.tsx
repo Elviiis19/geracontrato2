@@ -66,12 +66,31 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
            </div>
         </div>
         
-        <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4">
-          <p className="text-xs text-slate-400">
-            &copy; {currentYear} Gera Contrato. Todos os direitos reservados.
-          </p>
-          <div className="flex items-center space-x-4">
-             <span className="text-xs text-slate-500">Desenvolvido por Elvis Dias</span>
+        {/* Legal Disclaimer Section - Added for Transparency */}
+        <div className="border-t border-slate-800 pt-8 mt-8">
+          <div className="bg-slate-800/50 p-5 rounded-lg border border-slate-700/50 mb-8">
+            <div className="flex flex-col md:flex-row gap-4 items-start">
+              <div className="shrink-0 pt-1">
+                <svg className="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <p className="text-xs text-slate-400 leading-relaxed text-justify md:text-left">
+                <strong>Isenção de Responsabilidade:</strong> O Gera Contrato fornece modelos padronizados de documentos e ferramentas automatizadas apenas para fins informativos e de conveniência. 
+                Este serviço <strong>não constitui consultoria jurídica</strong> e não substitui a orientação técnica de um advogado ou especialista. 
+                Embora nos esforcemos para manter nossos modelos atualizados com a legislação vigente, cada caso possui particularidades que um modelo genérico pode não cobrir. 
+                Recomendamos fortemente que todos os documentos gerados sejam revisados por um profissional qualificado antes da assinatura para garantir que atendam às suas necessidades específicas e protejam seus interesses.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4">
+            <p className="text-xs text-slate-500">
+              &copy; {currentYear} Gera Contrato. Todos os direitos reservados.
+            </p>
+            <div className="flex items-center space-x-4">
+               <span className="text-xs text-slate-500">Desenvolvido por Elvis Dias</span>
+            </div>
           </div>
         </div>
       </div>

@@ -44,23 +44,21 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </p>
           
           <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-            <button 
-              onClick={scrollToModels}
-              className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white text-lg font-bold rounded-xl shadow-lg shadow-blue-900/40 transition-all transform hover:-translate-y-1 hover:shadow-2xl flex items-center justify-center gap-2 border border-blue-500 ring-offset-2 ring-offset-slate-900 focus:ring-2 focus:ring-blue-500"
-              aria-label="Ver modelos de contrato disponíveis"
+            <a 
+              href={getRouteByView('servico').path}
+              onClick={(e) => handleLinkClick('servico', e)}
+              className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white text-lg font-bold rounded-xl shadow-lg shadow-blue-900/40 transition-all transform hover:-translate-y-1 hover:shadow-2xl flex items-center justify-center gap-2 border border-blue-500 ring-offset-2 ring-offset-slate-900 focus:ring-2 focus:ring-blue-500 no-underline"
+              aria-label="Criar contrato de prestação de serviços agora"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-              Escolher Modelo
-            </button>
+              Criar Contrato Grátis
+            </a>
             <button 
-              onClick={() => {
-                const howToSection = document.getElementById('como-funciona');
-                howToSection?.scrollIntoView({ behavior: 'smooth' });
-              }}
+              onClick={scrollToModels}
               className="px-8 py-4 bg-slate-800/80 hover:bg-slate-700 text-white text-lg font-medium rounded-xl border border-slate-700 backdrop-blur-sm transition-all flex items-center justify-center gap-2"
-              aria-label="Entender como funciona o sistema"
+              aria-label="Ver modelos de contrato disponíveis"
             >
-              Como Funciona
+              Ver Modelos
             </button>
           </div>
           
