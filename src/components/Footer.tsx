@@ -66,13 +66,21 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
            </div>
         </div>
         
-        <div className="border-t border-gray-700 pt-6 text-center">
-          <p className="mb-2 text-sm text-gray-500">
-            &copy; {currentYear} Gera Contrato. Todos os direitos reservados.
-          </p>
-          <p className="text-xs text-gray-600">
-            Desenvolvido por Elvis Dias
-          </p>
+        <div className="border-t border-gray-700 pt-8 mt-8">
+           <div className="bg-gray-900/50 p-4 rounded-lg mb-6 text-xs text-gray-500 text-justify leading-relaxed border border-gray-700">
+             <strong>AVISO LEGAL:</strong> O Gera Contrato é uma ferramenta tecnológica de automação de documentos e não presta assessoria jurídica. 
+             Os modelos disponibilizados são genéricos e baseados na legislação vigente, servindo apenas como ponto de partida. 
+             A utilização deste site não cria uma relação de advogado-cliente. Recomendamos que você consulte um advogado para revisar qualquer contrato antes de assiná-lo, especialmente em casos complexos ou que envolvam grandes somas de dinheiro.
+           </div>
+
+          <div className="text-center">
+            <p className="mb-2 text-sm text-gray-500">
+              &copy; {currentYear} Gera Contrato. Todos os direitos reservados.
+            </p>
+            <p className="text-xs text-gray-600">
+              Desenvolvido por Elvis Dias
+            </p>
+          </div>
         </div>
       </div>
     </footer>

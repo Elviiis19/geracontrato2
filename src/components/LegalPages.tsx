@@ -3,35 +3,90 @@ import React from 'react';
 export const PrivacyPolicy: React.FC = () => (
   <div className="max-w-4xl mx-auto px-4 py-12 animate-fade-in">
     <h1 className="text-3xl font-bold text-navy-900 mb-6">Política de Privacidade</h1>
-    <div className="prose prose-blue max-w-none text-gray-700">
-      <p>A sua privacidade é fundamental para nós. No <strong>Gera Contrato</strong>, temos o compromisso de proteger sua privacidade e seus dados.</p>
+    <div className="prose prose-blue max-w-none text-slate-700 leading-relaxed">
+      <p>
+        No <strong>Gera Contrato</strong>, a privacidade e a segurança dos seus dados são prioridades absolutas. 
+        Esta política descreve como operamos em conformidade com a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018).
+      </p>
       
-      <h3 className="text-xl font-semibold mt-4 mb-2">1. Coleta e Armazenamento de Dados</h3>
-      <p>Nosso site opera com uma arquitetura <strong>Client-Side</strong>. Isso significa que todos os dados inseridos nos formulários para a geração de contratos são processados exclusivamente no navegador do seu dispositivo. <strong>Nós não enviamos, armazenamos ou salvamos seus dados pessoais ou contratuais em nossos servidores.</strong> Assim que você fecha a aba ou atualiza a página, os dados inseridos desaparecem.</p>
+      <h3 className="text-xl font-bold text-slate-900 mt-8 mb-3">1. Arquitetura Client-Side e Proteção de Dados</h3>
+      <p>
+        Diferente da maioria dos sites, o Gera Contrato utiliza uma arquitetura de processamento <strong>"Client-Side" (Lado do Cliente)</strong>. 
+        Isso significa que:
+      </p>
+      <ul className="list-disc pl-5 space-y-2">
+        <li>Os dados que você digita no formulário <strong>jamais são enviados para nossos servidores</strong>.</li>
+        <li>Toda a geração do arquivo PDF ocorre localmente, utilizando a memória e o processador do seu próprio dispositivo (computador ou celular).</li>
+        <li>Nós não possuímos banco de dados de usuários, portanto, <strong>não armazenamos, não lemos e não compartilhamos</strong> o conteúdo dos seus contratos.</li>
+      </ul>
+      <p className="mt-2">
+        Ao fechar a aba do navegador ou atualizar a página, todas as informações inseridas são automaticamente descartadas da memória do seu dispositivo.
+      </p>
 
-      <h3 className="text-xl font-semibold mt-4 mb-2">2. Cookies e Tecnologias de Rastreamento</h3>
-      <p>Utilizamos cookies essenciais apenas para garantir o funcionamento correto do site e cookies de análise (como Google Analytics) para entender como nossa ferramenta é utilizada e melhorar a experiência do usuário. Esses dados são anônimos e agregados.</p>
+      <h3 className="text-xl font-bold text-slate-900 mt-8 mb-3">2. Cookies e Coleta de Dados Anônimos</h3>
+      <p>Utilizamos cookies e tecnologias similares com finalidades restritas:</p>
+      <ul className="list-disc pl-5 space-y-2">
+        <li><strong>Cookies Essenciais:</strong> Necessários para o funcionamento técnico do site.</li>
+        <li><strong>Análise de Tráfego (Analytics):</strong> Coletamos dados anônimos e agregados (como número de visitas, tempo na página e localização aproximada) para melhorar a performance da ferramenta. Estes dados não identificam você pessoalmente.</li>
+        <li><strong>Publicidade:</strong> Utilizamos parceiros de publicidade (como Google AdSense) que podem utilizar cookies para exibir anúncios relevantes baseados em seus interesses.</li>
+      </ul>
 
-      <h3 className="text-xl font-semibold mt-4 mb-2">3. Publicidade</h3>
-      <p>Podemos exibir anúncios de terceiros (como Google AdSense) para manter a ferramenta gratuita. Esses fornecedores podem usar cookies para exibir anúncios com base em visitas anteriores.</p>
+      <h3 className="text-xl font-bold text-slate-900 mt-8 mb-3">3. Seus Direitos (LGPD)</h3>
+      <p>
+        Como não armazenamos dados pessoais identificáveis (PII) em nossos sistemas, o risco de vazamento de dados por parte do Gera Contrato é inexistente. 
+        Ainda assim, garantimos transparência total sobre nossas operações.
+      </p>
 
-      <p className="mt-8 text-sm text-gray-500">Última atualização: Janeiro de 2026.</p>
+      <p className="mt-8 text-sm text-gray-500 border-t pt-4">Última atualização: Janeiro de 2026.</p>
     </div>
   </div>
 );
 
 export const TermsOfUse: React.FC = () => (
   <div className="max-w-4xl mx-auto px-4 py-12 animate-fade-in">
-    <h1 className="text-3xl font-bold text-navy-900 mb-6">Termos de Uso</h1>
-    <div className="prose prose-blue max-w-none text-gray-700">
-      <h3 className="text-xl font-semibold mt-4 mb-2">1. Natureza do Serviço</h3>
-      <p>O <strong>Gera Contrato</strong> é uma ferramenta automatizada que fornece modelos padronizados de documentos jurídicos. O serviço é fornecido "como está", de forma gratuita.</p>
+    <h1 className="text-3xl font-bold text-navy-900 mb-6">Termos de Uso e Isenção de Responsabilidade</h1>
+    <div className="prose prose-blue max-w-none text-slate-700 leading-relaxed">
+      <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-8">
+        <p className="font-bold text-amber-800 m-0 text-sm uppercase">Aviso Importante</p>
+        <p className="text-amber-900 m-0">
+          O Gera Contrato é uma ferramenta tecnológica de automação documental e <strong>não presta assessoria jurídica</strong>.
+        </p>
+      </div>
 
-      <h3 className="text-xl font-semibold mt-4 mb-2">2. Ausência de Consultoria Jurídica</h3>
-      <p>Este site <strong>não substitui a consultoria de um advogado</strong>. Os modelos gerados são genéricos e baseados na legislação vigente (Código Civil e Lei do Inquilinato), mas podem não cobrir as especificidades de casos complexos. Recomendamos sempre a revisão do documento por um profissional qualificado antes da assinatura.</p>
+      <h3 className="text-xl font-bold text-slate-900 mt-8 mb-3">1. Natureza do Serviço</h3>
+      <p>
+        O <strong>Gera Contrato</strong> disponibiliza uma plataforma online gratuita para a formatação automática de minutas contratuais baseadas em modelos padronizados. 
+        O serviço é fornecido "no estado em que se encontra" ("as is"), sem garantias de adequação a casos específicos ou complexos.
+      </p>
 
-      <h3 className="text-xl font-semibold mt-4 mb-2">3. Responsabilidade</h3>
-      <p>O Gera Contrato e seus desenvolvedores não se responsabilizam por quaisquer danos diretos, indiretos ou consequenciais resultantes do uso ou da impossibilidade de uso dos documentos gerados neste site. O preenchimento correto e a validação das informações são de inteira responsabilidade do usuário.</p>
+      <h3 className="text-xl font-bold text-slate-900 mt-8 mb-3">2. Limitação de Responsabilidade (Disclaimer)</h3>
+      <p>
+        <strong>2.1. Ausência de Consultoria Jurídica:</strong> As informações contidas neste site e os documentos gerados possuem caráter meramente informativo e educacional. 
+        Eles não substituem, em hipótese alguma, a consultoria, análise ou revisão de um advogado qualificado.
+      </p>
+      <p>
+        <strong>2.2. Uso dos Documentos:</strong> O usuário reconhece que é o único responsável pela revisão, edição e veracidade dos dados inseridos no contrato. 
+        O Gera Contrato, seus desenvolvedores e afiliados não se responsabilizam por:
+      </p>
+      <ul className="list-disc pl-5 space-y-1">
+        <li>Perdas ou danos decorrentes do uso inadequado dos modelos;</li>
+        <li>Nulidade de cláusulas em litígios judiciais;</li>
+        <li>Erros de preenchimento cometidos pelo usuário;</li>
+        <li>Alterações legislativas que ocorram após a atualização dos nossos modelos.</li>
+      </ul>
+
+      <h3 className="text-xl font-bold text-slate-900 mt-8 mb-3">3. Propriedade Intelectual</h3>
+      <p>
+        O código-fonte, design, logotipo e a estrutura da plataforma são de propriedade exclusiva do Gera Contrato. 
+        É permitido o uso dos documentos gerados para fins pessoais e comerciais (fechamento de negócios), mas é vedada a cópia automatizada (scraping) 
+        ou a revenda da nossa ferramenta tecnológica.
+      </p>
+
+      <h3 className="text-xl font-bold text-slate-900 mt-8 mb-3">4. Modificações</h3>
+      <p>
+        Reservamo-nos o direito de modificar estes termos a qualquer momento, visando adaptar-nos a evoluções legislativas ou tecnológicas. 
+        O uso continuado da ferramenta implica na aceitação dos novos termos.
+      </p>
     </div>
   </div>
 );
@@ -39,21 +94,41 @@ export const TermsOfUse: React.FC = () => (
 export const CookiePolicy: React.FC = () => (
   <div className="max-w-4xl mx-auto px-4 py-12 animate-fade-in">
     <h1 className="text-3xl font-bold text-navy-900 mb-6">Política de Cookies</h1>
-    <div className="prose prose-blue max-w-none text-gray-700">
-      <p>Esta política descreve como o Gera Contrato utiliza cookies e tecnologias similares.</p>
+    <div className="prose prose-blue max-w-none text-slate-700 leading-relaxed">
+      <p>
+        Esta política explica como e por que usamos cookies quando você visita o Gera Contrato.
+      </p>
 
-      <h3 className="text-xl font-semibold mt-4 mb-2">1. O que são Cookies?</h3>
-      <p>Cookies são pequenos arquivos de texto armazenados no seu dispositivo quando você visita um site. Eles servem para lembrar suas preferências e melhorar a navegação.</p>
+      <h3 className="text-xl font-bold text-slate-900 mt-8 mb-3">1. O que são Cookies?</h3>
+      <p>
+        Cookies são pequenos arquivos de texto salvos no seu navegador. Eles funcionam como a "memória" do site, permitindo que a plataforma reconheça 
+        o seu dispositivo e lembre de suas preferências de navegação.
+      </p>
 
-      <h3 className="text-xl font-semibold mt-4 mb-2">2. Como usamos os Cookies?</h3>
-      <ul className="list-disc pl-5 mb-4">
-        <li><strong>Cookies Essenciais:</strong> Necessários para o funcionamento básico do site (ex: navegação entre páginas).</li>
-        <li><strong>Cookies de Desempenho:</strong> Utilizamos o Google Analytics para entender quantos usuários visitam o site e quais páginas são mais populares. Esses dados são anônimos.</li>
-        <li><strong>Publicidade:</strong> Parceiros como o Google podem usar cookies para exibir anúncios relevantes baseados nos seus interesses.</li>
-      </ul>
+      <h3 className="text-xl font-bold text-slate-900 mt-8 mb-3">2. Categorias de Cookies Utilizados</h3>
+      
+      <div className="mt-4 space-y-4">
+        <div className="border border-slate-200 rounded-lg p-4">
+          <h4 className="font-bold text-slate-900">Necessários (Essenciais)</h4>
+          <p className="text-sm">Indispensáveis para que o site funcione. Sem eles, recursos como a navegação entre páginas e a geração do PDF podem falhar.</p>
+        </div>
+        
+        <div className="border border-slate-200 rounded-lg p-4">
+          <h4 className="font-bold text-slate-900">Desempenho e Estatística</h4>
+          <p className="text-sm">Utilizamos o Google Analytics para entender o volume de acessos e quais modelos de contrato são mais procurados. Esses dados são anônimos (seu IP é anonimizado).</p>
+        </div>
 
-      <h3 className="text-xl font-semibold mt-4 mb-2">3. Gerenciamento</h3>
-      <p>Você pode desativar os cookies nas configurações do seu navegador a qualquer momento, mas isso pode afetar a funcionalidade de alguns sites.</p>
+        <div className="border border-slate-200 rounded-lg p-4">
+          <h4 className="font-bold text-slate-900">Publicidade e Marketing</h4>
+          <p className="text-sm">Nossos parceiros (como Google AdSense) podem usar cookies para exibir anúncios que sejam relevantes para você, evitando a repetição excessiva da mesma propaganda.</p>
+        </div>
+      </div>
+
+      <h3 className="text-xl font-bold text-slate-900 mt-8 mb-3">3. Gerenciamento de Cookies</h3>
+      <p>
+        Você tem total controle. É possível desativar ou limpar os cookies através das configurações do seu navegador (Chrome, Safari, Firefox, Edge). 
+        Note que, ao desabilitar cookies essenciais, a ferramenta pode não funcionar corretamente.
+      </p>
     </div>
   </div>
 );
