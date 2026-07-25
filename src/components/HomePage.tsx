@@ -330,6 +330,25 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
+      {/* Blog & Educational Section Link */}
+      <section className="w-full bg-slate-900 py-16 text-center border-t border-slate-800">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-extrabold text-white mb-6">Educação Jurídica e Guias</h2>
+          <p className="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
+            Acreditamos que o acesso à informação é a melhor forma de proteger seu patrimônio. 
+            Preparamos artigos completos sobre a Lei do Inquilinato, regras do Código Civil e proteção patrimonial.
+          </p>
+          <a 
+            href={getRouteByView('blog').path}
+            onClick={(e) => handleLinkClick('blog', e)}
+            className="inline-flex items-center gap-2 px-8 py-4 bg-transparent border-2 border-blue-500 text-blue-400 hover:bg-blue-600 hover:text-white hover:border-blue-600 text-lg font-bold rounded-xl transition-all"
+          >
+            Acessar o Blog e Guias Jurídicos
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+          </a>
+        </div>
+      </section>
+
     </div>
   );
 };

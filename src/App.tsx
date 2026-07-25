@@ -19,6 +19,12 @@ const CookiePolicy = React.lazy(() => import('./components/LegalPages').then(mod
 const FAQ = React.lazy(() => import('./components/FAQ').then(module => ({ default: module.FAQ })));
 const ContactPage = React.lazy(() => import('./components/ContactPage').then(module => ({ default: module.ContactPage })));
 
+// SEO Content components
+const BlogPage = React.lazy(() => import('./components/BlogPage').then(module => ({ default: module.BlogPage })));
+const ArticleServico = React.lazy(() => import('./components/ArticlePages').then(module => ({ default: module.ArticleServico })));
+const ArticleAluguel = React.lazy(() => import('./components/ArticlePages').then(module => ({ default: module.ArticleAluguel })));
+const ArticleUniao = React.lazy(() => import('./components/ArticlePages').then(module => ({ default: module.ArticleUniao })));
+
 const LoadingSpinner = () => (
   <div className="w-full h-96 flex items-center justify-center">
     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -159,6 +165,14 @@ const App: React.FC = () => {
               return <FAQ />;
             case 'contact':
               return <ContactPage />;
+            case 'blog':
+              return <BlogPage onNavigate={handleNavigation} />;
+            case 'article_servico':
+              return <ArticleServico onNavigate={handleNavigation} />;
+            case 'article_aluguel':
+              return <ArticleAluguel onNavigate={handleNavigation} />;
+            case 'article_uniao':
+              return <ArticleUniao onNavigate={handleNavigation} />;
             default:
               return <HomePage onNavigate={handleNavigation} />;
           }

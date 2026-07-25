@@ -241,6 +241,30 @@ export const routes: RouteConfig[] = [
     view: 'contact',
     title: "Fale Conosco | Suporte Gera Contrato",
     description: "Entre em contato com a equipe do Gera Contrato. Dúvidas técnicas, sugestões ou parcerias."
+  },
+  {
+    path: '/blog',
+    view: 'blog',
+    title: "Blog & Educação Jurídica | Gera Contrato",
+    description: "Artigos completos e guias jurídicos sobre contratos, leis e proteção patrimonial."
+  },
+  {
+    path: '/blog/importancia-contrato-prestacao-servicos',
+    view: 'article_servico',
+    title: "A Importância do Contrato de Prestação de Serviços | Gera Contrato",
+    description: "Guia completo: entenda por que o contrato de prestação de serviços é vital para autônomos e freelancers."
+  },
+  {
+    path: '/blog/o-que-nao-pode-faltar-contrato-aluguel',
+    view: 'article_aluguel',
+    title: "O que não pode faltar em um Contrato de Aluguel | Gera Contrato",
+    description: "Saiba quais são as cláusulas obrigatórias na locação de imóveis e como se proteger com base na Lei do Inquilinato."
+  },
+  {
+    path: '/blog/diferenca-uniao-estavel-namoro',
+    view: 'article_uniao',
+    title: "Diferença entre União Estável e Contrato de Namoro | Gera Contrato",
+    description: "Aprenda a proteger seu patrimônio entendendo a diferença jurídica entre namoro e união estável."
   }
 ];
 

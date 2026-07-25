@@ -49,6 +49,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
              <h4 className="text-white font-bold text-base mb-4 uppercase tracking-wider text-xs">Institucional</h4>
              <ul className="text-sm space-y-2">
                <li><a href={getRouteByView('about').path} onClick={(e) => handleLinkClick('about', e)} className="hover:text-blue-400 transition-colors block">Quem Somos</a></li>
+               <li><a href={getRouteByView('blog').path} onClick={(e) => handleLinkClick('blog', e)} className="hover:text-blue-400 transition-colors block font-semibold">Blog & Guias Jurídicos</a></li>
                <li><a href={getRouteByView('contact').path} onClick={(e) => handleLinkClick('contact', e)} className="hover:text-blue-400 transition-colors block">Fale Conosco</a></li>
                <li><a href={getRouteByView('faq').path} onClick={(e) => handleLinkClick('faq', e)} className="hover:text-blue-400 transition-colors block">Perguntas Frequentes (FAQ)</a></li>
                <li><a href={getRouteByView('privacy').path} onClick={(e) => handleLinkClick('privacy', e)} className="hover:text-blue-400 transition-colors block">Política de Privacidade</a></li>
