@@ -23,45 +23,6 @@
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Tailwind Config -->
-    <script>
-      tailwind = {
-        config: {
-          theme: {
-            extend: {
-              fontFamily: {
-                sans: ['Inter', 'sans-serif'],
-              },
-              colors: {
-                navy: {
-                  800: '#1e3a8a',
-                  900: '#0f172a',
-                },
-                slate: {
-                  850: '#1e293b',
-                  900: '#0f172a',
-                }
-              },
-              screens: {
-                'print': {'raw': 'print'},
-              },
-              animation: {
-                'fade-in': 'fadeIn 0.4s ease-out forwards',
-              },
-              keyframes: {
-                fadeIn: {
-                  '0%': { opacity: '0', transform: 'translateY(10px)' },
-                  '100%': { opacity: '1', transform: 'translateY(0)' },
-                }
-              }
-            }
-          }
-        }
-      }
-    </script>
-    <!-- Tailwind CSS (No defer to prevent FOUC/Visual Glitches) -->
-    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-
     <!-- Google tag (gtag.js) - Standard Async for Search Console Validation -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-B2ZW0Q67E4"></script>
     <script>
@@ -71,28 +32,6 @@
 
       gtag('config', 'G-B2ZW0Q67E4');
     </script>
-
-    <style>
-      @media print {
-        @page { margin: 0; size: auto; }
-        body { -webkit-print-color-adjust: exact; }
-      }
-      /* Smooth scrolling */
-      html { scroll-behavior: smooth; }
-      
-      /* Accessibility focus */
-      :focus-visible {
-        outline: 2px solid #2563eb;
-        outline-offset: 2px;
-      }
-      /* Critical CSS to match visual design immediately */
-      body {
-        background-color: #f8fafc; /* slate-50 */
-        color: #0f172a; /* slate-900 */
-        margin: 0;
-        font-family: sans-serif;
-      }
-    </style>
 <script type="importmap">
 {
   "imports": {
